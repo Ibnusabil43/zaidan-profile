@@ -1,0 +1,136 @@
+/* Experience Section Styles */
+@import '../variables.css';
+
+.experience-timeline {
+  max-width: 900px;
+  margin: 0 auto 4rem;
+  position: relative;
+}
+
+.experience-timeline::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-border);
+}
+
+.timeline-item {
+  position: relative;
+  padding-left: 60px;
+  margin-bottom: 3rem;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 12px;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  border: 3px solid var(--color-bg);
+}
+
+.timeline-content {
+  background: var(--gradient-bg);
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  transition: var(--transition-base);
+}
+
+.timeline-content:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+.timeline-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.timeline-organization {
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.timeline-period {
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+.timeline-description {
+  list-style: none;
+  padding-left: 0;
+}
+
+.timeline-description li {
+  padding-left: 1.5rem;
+  position: relative;
+  color: var(--color-text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.timeline-description li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-weight: bold;
+}
+
+/* Mobile Small */
+@media (max-width: 480px) {
+  .timeline-item {
+    padding-left: 35px;
+  }
+
+  .timeline-marker {
+    left: 10px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .timeline-content {
+    padding: 1.25rem;
+  }
+
+  .timeline-title {
+    font-size: 1.125rem;
+  }
+
+  .timeline-organization,
+  .timeline-period {
+    font-size: 0.875rem;
+  }
+
+  .timeline-description li {
+    font-size: 0.875rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 481px) and (max-width: 768px) {
+  .timeline-item {
+    padding-left: 45px;
+  }
+
+  .timeline-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
