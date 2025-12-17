@@ -19,32 +19,6 @@ A modern, responsive personal portfolio website built with Vue.js 3 and Vite, sh
 - **Styling**: CSS3 with CSS Variables for theming
 - **Icons**: SVG icons
 
-## 📁 Project Structure
-
-```
-ibnu-portofolio/
-├── public/
-│   └── images/           # Project thumbnails and images
-├── src/
-│   ├── components/       # Reusable Vue components
-│   │   ├── Navbar.vue
-│   │   ├── Footer.vue
-│   │   └── ProjectCard.vue
-│   ├── composables/      # Vue composables
-│   │   └── useDarkMode.js
-│   ├── data/            # Data files
-│   │   └── portfolio.js
-│   ├── router/          # Vue Router configuration
-│   │   └── index.js
-│   ├── views/           # Page components
-│   │   └── Home.vue
-│   ├── App.vue
-│   └── main.js
-├── index.html
-├── package.json
-└── vite.config.js
-```
-
 ## 🎨 Sections
 
 1. **Hero**: Introduction with call-to-action buttons
