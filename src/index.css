@@ -1,0 +1,122 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Monochrome ramp */
+  --color-ink-0: #ffffff;
+  --color-ink-50: #f7f7f8;
+  --color-ink-100: #ececee;
+  --color-ink-200: #d9d9dd;
+  --color-ink-300: #b8b8bf;
+  --color-ink-400: #8a8a93;
+  --color-ink-500: #61616a;
+  --color-ink-600: #44444b;
+  --color-ink-700: #2c2c31;
+  --color-ink-800: #19191c;
+  --color-ink-900: #101012;
+  --color-ink-950: #0a0a0b;
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html.dark {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--color-ink-0);
+    color: var(--color-ink-950);
+  }
+
+  html.dark body {
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-50);
+  }
+
+  ::selection {
+    background-color: var(--color-ink-950);
+    color: var(--color-ink-0);
+  }
+
+  html.dark ::selection {
+    background-color: var(--color-ink-50);
+    color: var(--color-ink-950);
+  }
+
+  /* Minimal monochrome scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-300);
+    border-radius: 0;
+  }
+  html.dark ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-700);
+  }
+}
+
+@layer utilities {
+  /* Fine film grain for tactile, non-generic depth */
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  html.dark .grain::before {
+    opacity: 0.06;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .marquee-track {
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-group:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee-track {
+    animation: none;
+  }
+}
