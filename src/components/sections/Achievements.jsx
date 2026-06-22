@@ -20,7 +20,7 @@ export default function Achievements() {
               className="group flex flex-col bg-ink-0 p-7 transition-colors hover:bg-ink-50 dark:bg-ink-950 dark:hover:bg-ink-900"
             >
               <div className="mb-4 flex items-center justify-between">
-                <span className="rounded-full border border-ink-200 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-ink-500 dark:border-ink-800 dark:text-ink-400">
+                <span className="rounded-full border border-ink-200 px-3 py-1 font-mono text-[10px] uppercase tracking-widest text-ink-500 dark:border-ink-800 dark:text-ink-300">
                   {a.category}
                 </span>
                 <span className="font-display text-2xl font-semibold text-ink-200 transition-colors group-hover:text-ink-950 dark:text-ink-800 dark:group-hover:text-ink-50">
@@ -30,10 +30,10 @@ export default function Achievements() {
               <h3 className="font-display text-lg font-semibold leading-snug text-ink-950 dark:text-ink-50">
                 {a.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
+              <p className="mt-2 text-sm leading-relaxed text-ink-600 dark:text-ink-200">
                 {a.description}
               </p>
-              <p className="mt-4 border-t border-ink-200 pt-3 font-mono text-[11px] text-ink-400 dark:border-ink-800 dark:text-ink-500">
+              <p className="mt-4 border-t border-ink-200 pt-3 font-mono text-[11px] text-ink-400 dark:border-ink-800 dark:text-ink-400">
                 {a.institution}
               </p>
             </Reveal>

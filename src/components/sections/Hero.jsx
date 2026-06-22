@@ -38,7 +38,7 @@ export default function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink-400 opacity-75 dark:bg-ink-500" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-ink-950 dark:bg-ink-50" />
           </span>
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-500 dark:text-ink-400">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-500 dark:text-ink-300">
             Available for work · Cirebon, ID
           </p>
         </motion.div>
@@ -49,12 +49,12 @@ export default function Hero() {
         >
           Zaidan
           <br />
-          <span className="text-ink-400 dark:text-ink-600">Ibnusabil</span>
+          <span className="text-ink-400 dark:text-ink-500">Ibnusabil</span>
         </motion.h1>
 
         <motion.div
           variants={item}
-          className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-ink-600 dark:text-ink-300"
+          className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-ink-600 dark:text-ink-200"
         >
           {ROLES.map((r, i) => (
             <span key={r} className="flex items-center gap-3">
@@ -66,7 +66,7 @@ export default function Hero() {
 
         <motion.p
           variants={item}
-          className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 text-balance sm:text-lg dark:text-ink-300"
+          className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 text-balance sm:text-lg dark:text-ink-200"
         >
           {profile.summary}
         </motion.p>
