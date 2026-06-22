@@ -13,13 +13,13 @@ export default function Contact() {
     <section id="contact" className="px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-400 dark:text-ink-500">
+          <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-400 dark:text-ink-400">
             06 / Contact
           </p>
           <h2 className="mt-6 font-display text-[clamp(2.5rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-tight text-ink-950 text-balance dark:text-ink-50">
             Let's build
             <br />
-            <span className="text-ink-400 dark:text-ink-600">something.</span>
+            <span className="text-ink-400 dark:text-ink-500">something.</span>
           </h2>
         </Reveal>
 
@@ -46,7 +46,7 @@ export default function Contact() {
               rel="noreferrer"
               className="group flex flex-col gap-2 bg-ink-0 p-6 transition-colors hover:bg-ink-950 dark:bg-ink-950 dark:hover:bg-ink-50"
             >
-              <span className="font-mono text-[11px] uppercase tracking-widest text-ink-400 transition-colors group-hover:text-ink-500 dark:text-ink-500">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-ink-400 transition-colors group-hover:text-ink-500 dark:text-ink-400">
                 {l.label}
               </span>
               <span className="text-sm text-ink-800 transition-colors group-hover:text-ink-0 dark:text-ink-200 dark:group-hover:text-ink-950">

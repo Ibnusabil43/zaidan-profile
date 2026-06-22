@@ -19,7 +19,7 @@ export default function Skills() {
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-ink-0 to-transparent dark:from-ink-950" />
         <div className="marquee-track flex shrink-0 items-center gap-8 pr-8">
           {[...allSkills, ...allSkills].map((s, i) => (
-            <span key={i} className="flex items-center gap-8 font-display text-2xl font-medium text-ink-300 sm:text-3xl dark:text-ink-700">
+            <span key={i} className="flex items-center gap-8 font-display text-2xl font-medium text-ink-300 sm:text-3xl dark:text-ink-500">
               {s}
               <span className="text-ink-950 dark:text-ink-50">·</span>
             </span>
@@ -39,7 +39,7 @@ export default function Skills() {
                 <h3 className="font-display text-base font-semibold text-ink-950 dark:text-ink-50">
                   {category}
                 </h3>
-                <span className="font-mono text-[11px] text-ink-400 dark:text-ink-600">
+                <span className="font-mono text-[11px] text-ink-400 dark:text-ink-500">
                   {String(idx + 1).padStart(2, '0')}
                 </span>
               </div>
@@ -47,7 +47,7 @@ export default function Skills() {
                 {items.map((s) => (
                   <li
                     key={s}
-                    className="rounded-full border border-ink-200 px-3 py-1 text-xs text-ink-600 transition-colors group-hover:border-ink-300 dark:border-ink-800 dark:text-ink-300 dark:group-hover:border-ink-700"
+                    className="rounded-full border border-ink-200 px-3 py-1 text-xs text-ink-600 transition-colors group-hover:border-ink-300 dark:border-ink-800 dark:text-ink-200 dark:group-hover:border-ink-700"
                   >
                     {s}
                   </li>

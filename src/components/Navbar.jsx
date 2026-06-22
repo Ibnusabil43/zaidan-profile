@@ -66,7 +66,7 @@ export default function Navbar({ theme, toggleTheme }) {
             <button
               key={l.id}
               onClick={() => go(l.id)}
-              className="rounded-full px-3 py-1.5 text-sm text-ink-500 transition-colors hover:text-ink-950 dark:text-ink-400 dark:hover:text-ink-50"
+              className="rounded-full px-3 py-1.5 text-sm text-ink-500 transition-colors hover:text-ink-950 dark:text-ink-300 dark:hover:text-ink-50"
             >
               {l.label}
             </button>
@@ -77,14 +77,14 @@ export default function Navbar({ theme, toggleTheme }) {
           <button
             onClick={toggleTheme}
             aria-label="Toggle color theme"
-            className="grid h-9 w-9 place-items-center rounded-full border border-ink-200 text-ink-700 transition-colors hover:border-ink-950 hover:text-ink-950 dark:border-ink-800 dark:text-ink-300 dark:hover:border-ink-50 dark:hover:text-ink-50"
+            className="grid h-9 w-9 place-items-center rounded-full border border-ink-200 text-ink-700 transition-colors hover:border-ink-950 hover:text-ink-950 dark:border-ink-800 dark:text-ink-200 dark:hover:border-ink-50 dark:hover:text-ink-50"
           >
             {theme === 'dark' ? <SunIcon className="h-[18px] w-[18px]" /> : <MoonIcon className="h-[18px] w-[18px]" />}
           </button>
           <button
             onClick={() => setOpen((o) => !o)}
             aria-label="Toggle menu"
-            className="grid h-9 w-9 place-items-center rounded-full border border-ink-200 text-ink-700 md:hidden dark:border-ink-800 dark:text-ink-300"
+            className="grid h-9 w-9 place-items-center rounded-full border border-ink-200 text-ink-700 md:hidden dark:border-ink-800 dark:text-ink-200"
           >
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round">
               {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
@@ -99,7 +99,7 @@ export default function Navbar({ theme, toggleTheme }) {
             <button
               key={l.id}
               onClick={() => go(l.id)}
-              className="block w-full py-2 text-left text-sm text-ink-600 dark:text-ink-300"
+              className="block w-full py-2 text-left text-sm text-ink-600 dark:text-ink-200"
             >
               {l.label}
             </button>

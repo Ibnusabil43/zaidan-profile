@@ -13,25 +13,25 @@ function ExperienceItem({ job, idx }) {
           onClick={() => setOpen((o) => !o)}
           className="grid w-full grid-cols-[auto_1fr_auto] items-start gap-4 py-7 text-left sm:gap-8"
         >
-          <span className="font-mono text-xs text-ink-400 dark:text-ink-600">
+          <span className="font-mono text-xs text-ink-400 dark:text-ink-500">
             {String(idx + 1).padStart(2, '0')}
           </span>
           <span>
             <span className="block font-display text-lg font-semibold text-ink-950 transition-colors group-hover:text-ink-600 sm:text-xl dark:text-ink-50 dark:group-hover:text-ink-300">
               {job.title}
             </span>
-            <span className="mt-1 block text-sm text-ink-500 dark:text-ink-400">
+            <span className="mt-1 block text-sm text-ink-500 dark:text-ink-300">
               {job.company}
-              {job.location && <span className="text-ink-400 dark:text-ink-600"> — {job.location}</span>}
+              {job.location && <span className="text-ink-400 dark:text-ink-500"> — {job.location}</span>}
             </span>
           </span>
           <span className="flex items-center gap-4">
-            <span className="hidden whitespace-nowrap font-mono text-xs text-ink-400 sm:block dark:text-ink-500">
+            <span className="hidden whitespace-nowrap font-mono text-xs text-ink-400 sm:block dark:text-ink-400">
               {job.period}
             </span>
             <svg
               viewBox="0 0 24 24"
-              className={`h-4 w-4 flex-none text-ink-400 transition-transform duration-300 dark:text-ink-500 ${open ? 'rotate-45' : ''}`}
+              className={`h-4 w-4 flex-none text-ink-400 transition-transform duration-300 dark:text-ink-400 ${open ? 'rotate-45' : ''}`}
               fill="none"
               stroke="currentColor"
               strokeWidth="1.8"
@@ -47,9 +47,9 @@ function ExperienceItem({ job, idx }) {
         >
           <div className="overflow-hidden">
             <ul className="space-y-2.5 pb-7 pl-[calc(1.5rem+1ch)] sm:pl-[calc(2rem+2ch)]">
-              <li className="mb-3 font-mono text-xs text-ink-400 sm:hidden dark:text-ink-500">{job.period}</li>
+              <li className="mb-3 font-mono text-xs text-ink-400 sm:hidden dark:text-ink-400">{job.period}</li>
               {job.responsibilities.map((r, i) => (
-                <li key={i} className="flex gap-3 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
+                <li key={i} className="flex gap-3 text-sm leading-relaxed text-ink-600 dark:text-ink-200">
                   <span className="mt-2 h-px w-3 flex-none bg-ink-300 dark:bg-ink-700" />
                   {r}
                 </li>

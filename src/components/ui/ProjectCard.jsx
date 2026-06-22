@@ -14,12 +14,12 @@ export default function ProjectCard({ project, idx, featured = false }) {
       >
         <div>
           <div className="mb-6 flex items-start justify-between">
-            <span className="font-mono text-xs text-ink-400 transition-colors group-hover:text-ink-400 dark:text-ink-600 dark:group-hover:text-ink-500">
+            <span className="font-mono text-xs text-ink-400 transition-colors group-hover:text-ink-400 dark:text-ink-500 dark:group-hover:text-ink-500">
               {String(idx + 1).padStart(2, '0')}
             </span>
             <span className="flex items-center gap-2">
               {project.featured && (
-                <span className="font-mono text-[10px] uppercase tracking-widest text-ink-400 transition-colors group-hover:text-ink-400 dark:text-ink-600 dark:group-hover:text-ink-500">
+                <span className="font-mono text-[10px] uppercase tracking-widest text-ink-400 transition-colors group-hover:text-ink-400 dark:text-ink-500 dark:group-hover:text-ink-500">
                   Featured
                 </span>
               )}
@@ -40,7 +40,7 @@ export default function ProjectCard({ project, idx, featured = false }) {
           <h3 className="font-display text-xl font-semibold tracking-tight text-ink-950 transition-colors group-hover:text-ink-0 dark:text-ink-50 dark:group-hover:text-ink-950">
             {project.title}
           </h3>
-          <p className="mt-3 text-sm leading-relaxed text-ink-600 transition-colors group-hover:text-ink-300 dark:text-ink-400 dark:group-hover:text-ink-600">
+          <p className="mt-3 text-sm leading-relaxed text-ink-600 transition-colors group-hover:text-ink-300 dark:text-ink-300 dark:group-hover:text-ink-600">
             {project.description}
           </p>
         </div>
@@ -49,7 +49,7 @@ export default function ProjectCard({ project, idx, featured = false }) {
           {project.tech.map((t) => (
             <li
               key={t}
-              className="rounded-full border border-ink-200 px-2.5 py-1 font-mono text-[11px] text-ink-500 transition-colors group-hover:border-ink-700 group-hover:text-ink-300 dark:border-ink-800 dark:text-ink-400 dark:group-hover:border-ink-300 dark:group-hover:text-ink-600"
+              className="rounded-full border border-ink-200 px-2.5 py-1 font-mono text-[11px] text-ink-500 transition-colors group-hover:border-ink-700 group-hover:text-ink-300 dark:border-ink-800 dark:text-ink-300 dark:group-hover:border-ink-300 dark:group-hover:text-ink-600"
             >
               {t}
             </li>

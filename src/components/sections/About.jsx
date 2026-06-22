@@ -28,7 +28,7 @@ export default function About() {
                   loading="lazy"
                 />
               </div>
-              <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-ink-400 dark:text-ink-500">
+              <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-ink-400 dark:text-ink-400">
                 Zaidan I. Iryanto — 2025
               </p>
             </div>
@@ -57,7 +57,7 @@ export default function About() {
                   <div className="font-display text-2xl font-semibold text-ink-950 sm:text-3xl dark:text-ink-50">
                     {s.value}
                   </div>
-                  <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-ink-400 dark:text-ink-500">
+                  <div className="mt-1 font-mono text-[11px] uppercase tracking-wider text-ink-400 dark:text-ink-400">
                     {s.label}
                   </div>
                 </div>
@@ -70,13 +70,13 @@ export default function About() {
                   <h3 className="font-display text-lg font-semibold text-ink-950 dark:text-ink-50">
                     {edu.degree}
                   </h3>
-                  <p className="mt-1 text-sm text-ink-600 dark:text-ink-300">{edu.institution}</p>
+                  <p className="mt-1 text-sm text-ink-600 dark:text-ink-200">{edu.institution}</p>
                 </div>
-                <span className="font-mono text-xs text-ink-400 dark:text-ink-500">{edu.period}</span>
+                <span className="font-mono text-xs text-ink-400 dark:text-ink-400">{edu.period}</span>
               </div>
               <ul className="mt-5 space-y-2">
                 {edu.details.slice(0, 4).map((d, i) => (
-                  <li key={i} className="flex gap-3 text-sm leading-relaxed text-ink-600 dark:text-ink-300">
+                  <li key={i} className="flex gap-3 text-sm leading-relaxed text-ink-600 dark:text-ink-200">
                     <span className="mt-2 h-px w-4 flex-none bg-ink-300 dark:bg-ink-700" />
                     {d}
                   </li>
