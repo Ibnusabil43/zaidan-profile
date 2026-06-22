@@ -4,7 +4,7 @@ import Reveal from '../ui/Reveal'
 import { experience } from '../../data/portfolio'
 
 function ExperienceItem({ job, idx }) {
-  const [open, setOpen] = useState(idx === 0)
+  const [open, setOpen] = useState(false)
 
   return (
     <Reveal delay={Math.min(idx * 0.04, 0.2)}>
