@@ -1,29 +1,39 @@
-import { profile, experience } from '@zaidan/data'
+import { experience, profile } from '@zaidan/data'
+import { buildTimeline } from './lib/timeline'
+import CareerMap from './components/CareerMap'
+import StaticTimeline from './components/StaticTimeline'
 
-/*
- * Phase 0 scaffold only. Its single job is to prove the workspace wiring works:
- * this app resolves @zaidan/data and renders real content from it.
- *
- * The career map replaces all of this in Phase 2 (LAB-C3). Deliberately no
- * anime.js code yet — per CLAUDE.md, anime.js is only written in a session that
- * has loaded the /animejs skill, which is Phase 3.
- */
+const checkpoints = buildTimeline(experience)
+
 export default function App() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-24">
-      <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-500">
-        Lab — scaffold
-      </p>
-      <h1 className="mt-6 font-display text-5xl font-bold tracking-tight text-ink-950">
-        {profile.name}
-      </h1>
-      <p className="mt-4 font-mono text-sm text-ink-600">{profile.status}</p>
-      <p className="mt-10 text-sm text-ink-600">
-        Reading <code className="font-mono text-ink-950">@zaidan/data</code>:{' '}
-        <strong className="text-ink-950">{experience.length}</strong> experience entries,
-        newest is <strong className="text-ink-950">{experience[0].title}</strong> at{' '}
-        {experience[0].company}.
-      </p>
-    </main>
+    <div className="min-h-screen bg-ink-0 text-ink-950">
+      <header className="mx-auto max-w-3xl px-6 pt-20 pb-4">
+        <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-500">
+          Career map · {checkpoints[0].startYear}–now
+        </p>
+        <h1 className="mt-6 font-display text-[clamp(2.25rem,6vw,4rem)] font-bold leading-[0.95] tracking-tight">
+          Where I have
+          <br />
+          <span className="text-ink-400">been working.</span>
+        </h1>
+        <p className="mt-6 max-w-xl text-sm leading-relaxed text-ink-600">
+          {checkpoints.length} stops between {checkpoints[0].startYear} and now, drawn from the same
+          record as the CV.
+        </p>
+        <a
+          href="#timeline"
+          className="mt-8 inline-block font-mono text-[11px] uppercase tracking-widest text-ink-500 underline decoration-ink-300 underline-offset-4 hover:text-ink-950"
+        >
+          Skip the map, just read it
+        </a>
+        <p className="mt-8 font-mono text-[11px] uppercase tracking-widest text-ink-400">
+          {profile.status}
+        </p>
+      </header>
+
+      <CareerMap checkpoints={checkpoints} />
+      <StaticTimeline checkpoints={checkpoints} />
+    </div>
   )
 }

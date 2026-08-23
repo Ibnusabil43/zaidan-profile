@@ -250,6 +250,9 @@ export const experience = [
     company: "PT Bank Rakyat Indonesia (Persero) Tbk",
     location: "Jakarta",
     period: "May 2026 - Present",
+    start: "2026-05",
+    end: null,
+    org: "Bank Rakyat Indonesia",
     type: "Full-time",
     responsibilities: [
       "Develop T24 batch services and InfoBasic routines supporting core banking business processes",
@@ -266,6 +269,9 @@ export const experience = [
     company: "PT Bank Rakyat Indonesia (Persero) Tbk",
     location: "Jakarta",
     period: "Jan 2026 - Present",
+    start: "2026-01",
+    end: null,
+    org: "Bank Rakyat Indonesia",
     type: "Full-time",
     responsibilities: [
       "Selected into BRI's flagship development programme for future IT specialists",
@@ -278,6 +284,9 @@ export const experience = [
     company: "Ordinat Consultant",
     location: "Cirebon, West Java (Remote)",
     period: "Jul 2026 - Present",
+    start: "2026-07",
+    end: null,
+    org: "Ordinat Consultant",
     type: "Freelance",
     responsibilities: [
       "Built an internal psychological-testing management dashboard with Next.js 15, React 19, TypeScript, and Tailwind, backed by Supabase (PostgreSQL + Auth) and Prisma",
@@ -295,6 +304,9 @@ export const experience = [
     company: "CV. Dimensi Cakrawala",
     location: "Cirebon, West Java",
     period: "Sep 2025 - Apr 2026",
+    start: "2025-09",
+    end: "2026-04",
+    org: "CV. Dimensi Cakrawala",
     type: "Full-time",
     responsibilities: [
       "Installed and configured computer hardware, software, systems, networks, printers, and scanners",
@@ -311,6 +323,9 @@ export const experience = [
     company: "Telkom University",
     location: "Bandung, West Java",
     period: "Sep 2024 - Jan 2025",
+    start: "2024-09",
+    end: "2025-01",
+    org: "Telkom University",
     type: "Contract",
     responsibilities: [
       "Supported lecturers in teaching Programming Algorithm",
@@ -323,6 +338,9 @@ export const experience = [
     company: "Informatics Laboratory, Telkom University",
     location: "Bandung, West Java",
     period: "Jun 2024 - Jun 2025",
+    start: "2024-06",
+    end: "2025-06",
+    org: "Telkom University",
     type: "Contract",
     responsibilities: [
       "Managed practicum assistant recruitment, the question bank, practicum problem creation, score documentation, and laboratory inventory",
@@ -337,6 +355,9 @@ export const experience = [
     company: "Telkom Indonesia",
     location: "Jakarta",
     period: "Jun 2024 - Aug 2024",
+    start: "2024-06",
+    end: "2024-08",
+    org: "Telkom Indonesia",
     type: "Internship",
     responsibilities: [
       "Developed a mobile application prototype for the Assurance and Fulfillment Ticketing System at the Indihome IT Division (OPO), Telkom Indonesia",
@@ -351,6 +372,9 @@ export const experience = [
     company: "Bangkit Academy led by Google, Tokopedia, Gojek & Traveloka",
     location: "Remote",
     period: "Feb 2024 - Jul 2024",
+    start: "2024-02",
+    end: "2024-07",
+    org: "Bangkit Academy",
     type: "Programme",
     responsibilities: [
       "Completed an intensive Android development programme in Kotlin",
@@ -365,6 +389,9 @@ export const experience = [
     company: "Informatics Laboratory, Telkom University",
     location: "Bandung, West Java",
     period: "Jul 2023 - Jun 2025",
+    start: "2023-07",
+    end: "2025-06",
+    org: "Telkom University",
     type: "Contract",
     responsibilities: [
       "Assisted students in lab sessions for Programming Algorithm, Data Structures, Computer Networks, Object-Oriented Programming, and Mobile Programming",
@@ -379,6 +406,9 @@ export const experience = [
     company: "Ordinat Consultant",
     location: "Cirebon, West Java",
     period: "Jul 2020 - Jan 2025",
+    start: "2020-07",
+    end: "2025-01",
+    org: "Ordinat Consultant",
     type: "Part-time",
     responsibilities: [
       "Compiled and organised participants' psychological test results into accessible records",
