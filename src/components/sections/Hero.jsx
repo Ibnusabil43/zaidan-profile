@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { profile } from '../../data/portfolio'
 
 const container = {
@@ -10,7 +10,21 @@ const item = {
   show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
 }
 
+/** Resting state only — used when the visitor asks for reduced motion. */
+const still = { hidden: { opacity: 1, y: 0 }, show: { opacity: 1, y: 0 } }
+
 export default function Hero() {
+  const reduceMotion = useReducedMotion()
+  const containerVariants = reduceMotion ? still : container
+  const itemVariants = reduceMotion ? still : item
+
+  const scrollToProjects = (e) => {
+    e.preventDefault()
+    document.getElementById('projects')?.scrollIntoView({
+      behavior: reduceMotion ? 'auto' : 'smooth',
+    })
+  }
+
   return (
     <section id="top" className="relative overflow-hidden px-6 pt-32 pb-20 md:pt-40 md:pb-28">
       {/* faint grid backdrop */}
@@ -26,12 +40,12 @@ export default function Hero() {
       />
 
       <motion.div
-        variants={container}
+        variants={containerVariants}
         initial="hidden"
         animate="show"
         className="relative mx-auto max-w-6xl"
       >
-        <motion.div variants={item} className="mb-8 flex items-center gap-3">
+        <motion.div variants={itemVariants} className="mb-8 flex items-center gap-3">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink-400 opacity-75 dark:bg-ink-500" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-ink-950 dark:bg-ink-50" />
@@ -42,7 +56,7 @@ export default function Hero() {
         </motion.div>
 
         <motion.h1
-          variants={item}
+          variants={itemVariants}
           className="font-display text-[clamp(2.75rem,9vw,8rem)] font-bold leading-[0.92] tracking-tight text-ink-950 text-balance dark:text-ink-50"
         >
           Zaidan
@@ -51,7 +65,7 @@ export default function Hero() {
         </motion.h1>
 
         <motion.div
-          variants={item}
+          variants={itemVariants}
           className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-ink-600 dark:text-ink-200"
         >
           {profile.roles.map((r, i) => (
@@ -63,19 +77,16 @@ export default function Hero() {
         </motion.div>
 
         <motion.p
-          variants={item}
+          variants={itemVariants}
           className="mt-8 max-w-2xl text-base leading-relaxed text-ink-600 text-balance sm:text-lg dark:text-ink-200"
         >
           {profile.summary}
         </motion.p>
 
-        <motion.div variants={item} className="mt-10 flex flex-wrap items-center gap-3">
+        <motion.div variants={itemVariants} className="mt-10 flex flex-wrap items-center gap-3">
           <a
             href="#projects"
-            onClick={(e) => {
-              e.preventDefault()
-              document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })
-            }}
+            onClick={scrollToProjects}
             className="group inline-flex items-center gap-2 rounded-full bg-ink-950 px-6 py-3 text-sm font-medium text-ink-0 transition-colors hover:bg-ink-700 dark:bg-ink-50 dark:text-ink-950 dark:hover:bg-ink-200"
           >
             View selected work

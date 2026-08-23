@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --ink-0: #ffffff;
+        --ink-200: #d9d9dd;
+        --ink-400: #8a8a93;
+        --ink-500: #61616a;
+        --ink-600: #44444b;
+        --ink-950: #0a0a0b;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: var(--ink-0);
+        color: var(--ink-950);
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        position: relative;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* faint grid backdrop, same language as the site hero */
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(10,10,11,0.055) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(10,10,11,0.055) 1px, transparent 1px);
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black, transparent 78%);
+        mask-image: radial-gradient(ellipse 80% 70% at 50% 0%, black, transparent 78%);
+      }
+      .frame {
+        position: relative;
+        height: 100%;
+        padding: 72px 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .kicker {
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 17px;
+        font-weight: 500;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--ink-500);
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .dot {
+        width: 9px; height: 9px; border-radius: 999px;
+        background: var(--ink-950);
+        display: inline-block;
+      }
+      h1 {
+        font-size: 116px;
+        font-weight: 700;
+        line-height: 0.9;
+        letter-spacing: -0.035em;
+      }
+      h1 .muted { color: var(--ink-400); }
+      .roles {
+        margin-top: 30px;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 21px;
+        color: var(--ink-600);
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .sep { color: var(--ink-200); }
+      .rule { height: 1px; background: var(--ink-200); margin-bottom: 26px; }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-size: 17px;
+        color: var(--ink-500);
+        letter-spacing: 0.05em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="frame">
+      <div class="kicker"><span class="dot"></span>Backend Engineer @ BRI · Jakarta, ID</div>
+
+      <div>
+        <h1>Zaidan<br /><span class="muted">Ibnusabil</span></h1>
+        <div class="roles">
+          <span>Backend Engineer</span><span class="sep">/</span>
+          <span>Core Banking</span><span class="sep">/</span>
+          <span>Full-Stack Developer</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="rule"></div>
+        <div class="foot">
+          <span>Temenos T24 · Python · Next.js</span>
+          <span>github.com/ibnusabil43</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
