@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { profile } from '../../data/portfolio'
+import { profile } from '@zaidan/data'
 
 const container = {
   hidden: {},

@@ -3,7 +3,7 @@ import SectionHeader from '../ui/SectionHeader'
 import ProjectCard from '../ui/ProjectCard'
 import Reveal from '../ui/Reveal'
 import FillerCell, { fillerCount } from '../ui/FillerCell'
-import { projects, earlierWork } from '../../data/portfolio'
+import { projects, earlierWork } from '@zaidan/data'
 
 const GRID =
   'grid gap-px overflow-hidden border border-ink-200 bg-ink-200 sm:grid-cols-2 dark:border-ink-800 dark:bg-ink-800'

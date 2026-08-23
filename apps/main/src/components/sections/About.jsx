@@ -1,6 +1,6 @@
 import SectionHeader from '../ui/SectionHeader'
 import Reveal from '../ui/Reveal'
-import { education, profile } from '../../data/portfolio'
+import { education, profile } from '@zaidan/data'
 
 const STATS = [
   { value: '3', label: 'Systems live in production' },

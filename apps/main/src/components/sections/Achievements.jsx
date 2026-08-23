@@ -1,6 +1,6 @@
 import SectionHeader from '../ui/SectionHeader'
 import Reveal from '../ui/Reveal'
-import { achievements } from '../../data/portfolio'
+import { achievements } from '@zaidan/data'
 
 function fillerCount2(n) {
   return (2 - (n % 2)) % 2

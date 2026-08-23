@@ -1,7 +1,7 @@
 import SectionHeader from '../ui/SectionHeader'
 import Reveal from '../ui/Reveal'
 import FillerCell, { fillerCount } from '../ui/FillerCell'
-import { skills } from '../../data/portfolio'
+import { skills } from '@zaidan/data'
 
 export default function Skills() {
   const categories = Object.entries(skills)
