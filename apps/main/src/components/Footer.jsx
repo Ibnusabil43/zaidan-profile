@@ -1,4 +1,4 @@
-import { profile } from '../data/portfolio'
+import { profile } from '@zaidan/data'
 
 export default function Footer() {
   const year = new Date().getFullYear()

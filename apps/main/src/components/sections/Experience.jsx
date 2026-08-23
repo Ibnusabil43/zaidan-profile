@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import SectionHeader from '../ui/SectionHeader'
 import Reveal from '../ui/Reveal'
-import { experience } from '../../data/portfolio'
+import { experience } from '@zaidan/data'
 
 function ExperienceItem({ job, idx }) {
   const [open, setOpen] = useState(false)

@@ -1,0 +1,11 @@
+{
+  "name": "@zaidan/data",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Single source of truth for profile, experience, projects and skills. Read by both apps.",
+  "main": "portfolio.js",
+  "exports": {
+    ".": "./portfolio.js"
+  }
+}

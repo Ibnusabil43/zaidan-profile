@@ -1,5 +1,5 @@
 import Reveal from '../ui/Reveal'
-import { profile } from '../../data/portfolio'
+import { profile } from '@zaidan/data'
 
 const LINKS = [
   { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
