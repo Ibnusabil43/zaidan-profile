@@ -291,11 +291,10 @@ export const experience = [
     images: []
   },
   {
-    // TODO(zaidan): ganti ke bulan selesai yang bener — belum dikonfirmasi, sementara pakai tahun aja.
     title: "IT Staff",
     company: "CV. Dimensi Cakrawala",
     location: "Cirebon, West Java",
-    period: "Sep 2025 - 2026",
+    period: "Sep 2025 - Apr 2026",
     type: "Full-time",
     responsibilities: [
       "Installed and configured computer hardware, software, systems, networks, printers, and scanners",
