@@ -24,6 +24,11 @@ function ExperienceItem({ job, idx }) {
               {job.company}
               {job.location && <span className="text-ink-400 dark:text-ink-500"> — {job.location}</span>}
             </span>
+            {job.type && (
+              <span className="mt-2 inline-block rounded-full border border-ink-200 px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-ink-400 dark:border-ink-800 dark:text-ink-500">
+                {job.type}
+              </span>
+            )}
           </span>
           <span className="flex items-center gap-4">
             <span className="hidden whitespace-nowrap font-mono text-xs text-ink-400 sm:block dark:text-ink-400">

@@ -1,8 +1,6 @@
 import { motion } from 'framer-motion'
 import { profile } from '../../data/portfolio'
 
-const ROLES = ['Mobile Developer', 'ML Engineer', 'Web Developer']
-
 const container = {
   hidden: {},
   show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
@@ -39,7 +37,7 @@ export default function Hero() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-ink-950 dark:bg-ink-50" />
           </span>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-500 dark:text-ink-300">
-            Available for work · Cirebon, ID
+            {profile.status}
           </p>
         </motion.div>
 
@@ -56,7 +54,7 @@ export default function Hero() {
           variants={item}
           className="mt-8 flex flex-wrap items-center gap-x-3 gap-y-2 font-mono text-sm text-ink-600 dark:text-ink-200"
         >
-          {ROLES.map((r, i) => (
+          {profile.roles.map((r, i) => (
             <span key={r} className="flex items-center gap-3">
               {i > 0 && <span className="text-ink-300 dark:text-ink-700">/</span>}
               {r}

@@ -3,10 +3,10 @@ import Reveal from '../ui/Reveal'
 import { education, profile } from '../../data/portfolio'
 
 const STATS = [
-  { value: '3.83', label: 'GPA / 4.00' },
-  { value: '7+', label: 'Roles held' },
-  { value: '1', label: 'Published paper' },
-  { value: 'Top 50', label: 'Bangkit capstone' },
+  { value: '3', label: 'Systems live in production' },
+  { value: '10', label: 'Roles since 2020' },
+  { value: '1', label: 'Published paper (ICoDSA)' },
+  { value: '3.83', label: 'GPA, cum laude' },
 ]
 
 export default function About() {
@@ -38,16 +38,17 @@ export default function About() {
           <div className="md:col-span-8">
             <Reveal>
               <p className="text-lg leading-relaxed text-ink-700 text-balance sm:text-xl dark:text-ink-200">
-                Informatics fresh graduate working at the intersection of{' '}
+                Backend engineer working on{' '}
                 <span className="text-ink-950 underline decoration-ink-300 underline-offset-4 dark:text-ink-50 dark:decoration-ink-700">
-                  mobile development
+                  core banking
                 </span>{' '}
-                and{' '}
+                at BRI, and building{' '}
                 <span className="text-ink-950 underline decoration-ink-300 underline-offset-4 dark:text-ink-50 dark:decoration-ink-700">
-                  machine learning
-                </span>
-                . I design and ship Android apps, integrate APIs, and build NLP & computer-vision
-                models — with a habit of turning messy problems into clean, maintainable systems.
+                  internal systems
+                </span>{' '}
+                end to end outside it. I like the unglamorous half of the work: the compile step
+                nobody automated, the scoring pass still done by hand, and turning it into
+                something the team stops thinking about.
               </p>
             </Reveal>
 
