@@ -4,6 +4,6 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  // Distinct port so both apps can run side by side.
-  server: { port: 5174 },
+  // Distinct port from apps/main (5173) and eventually apps/lab-term (5176).
+  server: { port: 5175 },
 })

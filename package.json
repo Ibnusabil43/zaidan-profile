@@ -9,9 +9,10 @@
   ],
   "scripts": {
     "dev": "npm run dev -w @zaidan/main",
-    "dev:lab": "npm run dev -w @zaidan/lab",
-    "build": "npm run build -w @zaidan/main && npm run build -w @zaidan/lab",
+    "dev:3d": "npm run dev -w @zaidan/lab-3d",
+    "build": "npm run build -w @zaidan/main && npm run build -w @zaidan/lab-3d",
     "build:main": "npm run build -w @zaidan/main",
-    "build:lab": "npm run build -w @zaidan/lab"
+    "build:3d": "npm run build -w @zaidan/lab-3d",
+    "test:parity": "npm run build:3d && node scripts/parity-check.mjs"
   }
 }
