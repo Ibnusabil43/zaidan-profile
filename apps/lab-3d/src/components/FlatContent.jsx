@@ -9,33 +9,29 @@ import {
 } from '@zaidan/data'
 
 /**
- * Every piece of shared content, rendered as a plain readable column.
+ * Every piece of content EXCEPT the profile header, rendered as a plain
+ * readable column.
+ *
+ * The header is deliberately not here. It is the one section that already has
+ * a 3D treatment (ApproachScene, 3D-1) and a flat treatment
+ * (sections/ProfileHeader rendered directly), and App.jsx chooses between them
+ * at the top level. Duplicating the header here as well would be exactly the
+ * "second markup" lab-3d.md §4.3 warns against — two places that can drift.
+ *
+ * As more scenes ship (Corridor 3D-2, Vault 3D-3, Lattice/Case/Exit 3D-4),
+ * their sections move out of this file the same way the header did: extract
+ * to `sections/`, wrap in a scene when in 3D mode, render plain here when flat.
  *
  * This is not a fallback bolted on afterwards — it is the content baseline
- * that scenes (D3-A through D3-D) progressively wrap in 3D chrome. It is also
- * exactly what a visitor gets with .flat-mode active (toggle, or
- * prefers-reduced-motion): same DOM, no 3D transforms applied on top.
- *
- * PRD FR-15 (content parity) is checked against whatever this renders — see
+ * scenes progressively wrap in 3D chrome. PRD FR-15 (content parity) is
+ * checked against whatever App.jsx renders in flat mode — see
  * scripts/parity-check.mjs. If a scene later stops importing one of these
- * arrays, the string it should contain disappears from the production bundle
- * and the parity check fails, which is the point.
+ * arrays, the string it should contain disappears from the rendered page and
+ * the parity check fails, which is the point.
  */
 export default function FlatContent() {
   return (
-    <main className="mx-auto max-w-3xl px-6 py-20">
-      <header>
-        <p className="font-mono text-xs uppercase tracking-[0.25em] text-[var(--d-dim)]">
-          {profile.status}
-        </p>
-        <h1 className="mt-4 font-display text-4xl font-bold tracking-tight text-[var(--d-ink)]">
-          {profile.name}
-        </h1>
-        <p className="mt-3 max-w-[65ch] text-base leading-relaxed text-[var(--d-muted)]">
-          {profile.summary}
-        </p>
-      </header>
-
+    <div className="mx-auto max-w-3xl px-6 py-20">
       <section aria-labelledby="experience-heading" className="mt-16">
         <h2 id="experience-heading" className="font-display text-2xl font-semibold text-[var(--d-ink)]">
           Experience
@@ -209,6 +205,6 @@ export default function FlatContent() {
           {profile.email}
         </a>
       </footer>
-    </main>
+    </div>
   )
 }
