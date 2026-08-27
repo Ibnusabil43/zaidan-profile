@@ -10,8 +10,12 @@ import Reveal from './ui/Reveal'
  * who the lab is for.
  *
  * Renders only when VITE_LAB_URL is set. Until the lab is actually deployed
- * (Phase 5) production has no such variable, so this cannot ship a dead link;
- * locally, apps/main/.env.development points it at the lab dev server.
+ * production has no such variable, so this cannot ship a dead link; locally,
+ * apps/main/.env.development points it at the lab dev server.
+ *
+ * Copy is deliberately generic — the lab's content was reset to a blank
+ * scaffold on 2026-08-23 pending a new direction, so it must not promise a
+ * specific experience (it used to say "Walk the career map").
  */
 export default function LabLink() {
   const url = import.meta.env.VITE_LAB_URL
@@ -28,10 +32,10 @@ export default function LabLink() {
             Also / The lab
           </p>
           <h3 className="mt-3 font-display text-2xl font-semibold tracking-tight text-ink-950 sm:text-3xl dark:text-ink-50">
-            Walk the career map
+            Step into the lab
           </h3>
           <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-600 dark:text-ink-300">
-            The same record as above, laid out as a path you can follow from 2020 to now.
+            A more hands-on space to explore the same work from above.
           </p>
         </div>
         <span className="flex flex-none items-center gap-3 font-mono text-xs uppercase tracking-widest text-ink-950 dark:text-ink-50">
