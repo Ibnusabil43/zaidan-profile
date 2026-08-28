@@ -1,8 +1,11 @@
 import ApproachScene from './components/scenes/ApproachScene'
+import CorridorScene from './components/scenes/CorridorScene'
 import ProfileHeader from './components/sections/ProfileHeader'
 import FlatContent from './components/FlatContent'
 import FlatModeToggle from './components/FlatModeToggle'
+import ThemeToggle from './components/ThemeToggle'
 import { useFlatMode } from './lib/useFlatMode'
+import { useTheme } from './lib/useTheme'
 
 /**
  * Single <main> landmark for the whole page. Header/scene and the rest of the
@@ -19,10 +22,12 @@ import { useFlatMode } from './lib/useFlatMode'
  */
 export default function App() {
   const [flat, setFlat] = useFlatMode()
+  const [dark, setDark] = useTheme()
 
   return (
     <>
       <FlatModeToggle flat={flat} onChange={setFlat} />
+      <ThemeToggle dark={dark} onChange={setDark} />
       <main>
         {flat ? (
           <div className="mx-auto max-w-3xl px-6 pt-20">
@@ -31,6 +36,7 @@ export default function App() {
         ) : (
           <ApproachScene flat={false} />
         )}
+        <CorridorScene flat={flat} />
         <FlatContent />
       </main>
     </>

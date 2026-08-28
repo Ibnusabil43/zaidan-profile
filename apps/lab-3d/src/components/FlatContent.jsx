@@ -1,6 +1,5 @@
 import {
   profile,
-  experience,
   projects,
   earlierWork,
   skills,
@@ -9,52 +8,23 @@ import {
 } from '@zaidan/data'
 
 /**
- * Every piece of content EXCEPT the profile header, rendered as a plain
- * readable column.
+ * Every piece of content EXCEPT the profile header and Experience, rendered
+ * as a plain readable column.
  *
- * The header is deliberately not here. It is the one section that already has
- * a 3D treatment (ApproachScene, 3D-1) and a flat treatment
- * (sections/ProfileHeader rendered directly), and App.jsx chooses between them
- * at the top level. Duplicating the header here as well would be exactly the
- * "second markup" lab-3d.md §4.3 warns against — two places that can drift.
+ * Header and Experience are not here — both have a 3D treatment (ApproachScene
+ * 3D-1, CorridorScene 3D-2) and a flat treatment, and App.jsx chooses between
+ * them at the top level. Duplicating either here would be the "second markup"
+ * lab-3d.md §4.3 warns against.
  *
- * As more scenes ship (Corridor 3D-2, Vault 3D-3, Lattice/Case/Exit 3D-4),
- * their sections move out of this file the same way the header did: extract
- * to `sections/`, wrap in a scene when in 3D mode, render plain here when flat.
- *
- * This is not a fallback bolted on afterwards — it is the content baseline
- * scenes progressively wrap in 3D chrome. PRD FR-15 (content parity) is
- * checked against whatever App.jsx renders in flat mode — see
- * scripts/parity-check.mjs. If a scene later stops importing one of these
- * arrays, the string it should contain disappears from the rendered page and
- * the parity check fails, which is the point.
+ * As more scenes ship (Vault 3D-3, Lattice/Case/Exit 3D-4), their sections
+ * move out of this file the same way. This is not a fallback bolted on
+ * afterwards — it is the content baseline scenes progressively wrap in 3D
+ * chrome. PRD FR-15 (content parity) is checked against whatever App.jsx
+ * renders in flat mode — see scripts/parity-check.mjs.
  */
 export default function FlatContent() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-20">
-      <section aria-labelledby="experience-heading" className="mt-16">
-        <h2 id="experience-heading" className="font-display text-2xl font-semibold text-[var(--d-ink)]">
-          Experience
-        </h2>
-        <ul className="mt-6 space-y-8 border-t border-[var(--d-line)] pt-6">
-          {experience.map((role) => (
-            <li key={`${role.title}-${role.start}`}>
-              <h3 className="font-display text-lg font-semibold text-[var(--d-ink)]">{role.title}</h3>
-              <p className="mt-1 text-sm text-[var(--d-muted)]">
-                {role.company} · {role.location} · {role.period}
-              </p>
-              <ul className="mt-3 space-y-1.5">
-                {role.responsibilities.map((r, i) => (
-                  <li key={i} className="text-sm leading-relaxed text-[var(--d-muted)]">
-                    {r}
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section aria-labelledby="projects-heading" className="mt-16">
         <h2 id="projects-heading" className="font-display text-2xl font-semibold text-[var(--d-ink)]">
           Projects

@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /*
  * Same ink ramp and fonts as the professional site (DESIGN.md §2) — that shared
  * vocabulary is what makes a visitor jumping between the two sites feel they are
@@ -56,6 +58,19 @@
   --d-z-mid: -120px;
   --d-z-back: -320px;
   --d-z-far: -600px;
+}
+
+html.dark {
+  color-scheme: dark;
+  --d-bg: var(--color-ink-950);
+  --d-plane: var(--color-ink-800);
+  --d-ink: var(--color-ink-50);
+  --d-muted: var(--color-ink-300);
+  --d-dim: var(--color-ink-400);
+  --d-line: var(--color-ink-700);
+  /* Lighter than the light-mode accent (#2563EB) — the same hex on a near-
+     black background loses too much contrast against --d-muted text. */
+  --d-accent: #60A5FA;
 }
 
 /*
