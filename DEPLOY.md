@@ -23,7 +23,10 @@ Di Vercel dashboard → project yang sekarang → Settings → General:
 **Jangan bikin project baru.** Domain yang sekarang harus tetep, karena link ke
 situs ini udah kesebar (`INF-A5`).
 
-## Project 2 — lab (baru, nanti di Phase 5)
+## Project 2 — lab (nanti, setelah ada isinya lagi)
+
+Lab-nya di-reset ke scaffold 23 Ags 2026 — belum ada yang layak di-deploy.
+Setting-nya nanti kalau udah waktunya:
 
 New Project → repo yang sama:
 
@@ -32,7 +35,7 @@ New Project → repo yang sama:
 | Root Directory | `apps/lab` |
 | Framework Preset | Vite |
 
-Domainnya subdomain dari domain utama (`LAB-F4`).
+Domainnya subdomain dari domain utama.
 
 ## Catatan npm workspaces
 

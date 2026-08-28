@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Same ink ramp and fonts as the professional site (DESIGN.md §2) — that shared
+ * vocabulary is what makes a visitor jumping between the two sites feel they are
+ * still in the same place. What differs is the layout and motion language (§4),
+ * not the palette.
+ */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --color-ink-0: #ffffff;
+  --color-ink-50: #f7f7f8;
+  --color-ink-100: #ececee;
+  --color-ink-200: #d9d9dd;
+  --color-ink-300: #b8b8bf;
+  --color-ink-400: #8a8a93;
+  --color-ink-500: #61616a;
+  --color-ink-600: #44444b;
+  --color-ink-700: #2c2c31;
+  --color-ink-800: #19191c;
+  --color-ink-900: #101012;
+  --color-ink-950: #0a0a0b;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--d-bg);
+    color: var(--d-ink);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/*
+ * DEPTH palette (DESIGN.md §4.1) — zinc neutrals + one blue accent, all
+ * contrast ratios verified against #FAFAFA before this file was written.
+ * Do not add a second accent color; see DESIGN.md §1 ("satu accent per lab").
+ */
+:root {
+  --d-bg: #FAFAFA;
+  --d-plane: #FFFFFF;
+  --d-ink: #09090B;
+  --d-muted: #52525B;
+  --d-dim: #71717A;
+  --d-line: #E4E4E7;
+  --d-accent: #2563EB;
+
+  /* Perspective and layer depths — DESIGN.md §4.2 / lab-3d.md §4.2. Do not go
+     below 1000px perspective: distortion makes edge text unreadable. */
+  --d-perspective: 1200px;
+  --d-z-front: 0px;
+  --d-z-mid: -120px;
+  --d-z-back: -320px;
+  --d-z-far: -600px;
+}
+
+html.dark {
+  color-scheme: dark;
+  --d-bg: var(--color-ink-950);
+  --d-plane: var(--color-ink-800);
+  --d-ink: var(--color-ink-50);
+  --d-muted: var(--color-ink-300);
+  --d-dim: var(--color-ink-400);
+  --d-line: var(--color-ink-700);
+  /* Lighter than the light-mode accent (#2563EB) — the same hex on a near-
+     black background loses too much contrast against --d-muted text. */
+  --d-accent: #60A5FA;
+}
+
+/*
+ * Reduced-motion floor, same shape as apps/main's (PRO-B4) and the reset lab's
+ * prior pattern. Kills transitions; JS-driven scroll and perspective toggling
+ * are handled separately (useReducedMotion.js) since a media query alone
+ * cannot reach window-level scroll behavior or an inline perspective value.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * .flat-mode is applied to the scene root (by useFlatMode.js) either because
+ * the visitor toggled it or because prefers-reduced-motion is set. It must
+ * fully neutralize the 3D rig: perspective: none, and every translateZ used
+ * by scene components must be guarded to 0 in that state (see individual
+ * scene components — this class alone does not touch inline transforms).
+ */
+.flat-mode {
+  perspective: none !important;
+}
+
