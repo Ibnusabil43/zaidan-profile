@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+/*
+ * Terminal Lab is gelap by design (NFR-3, DESIGN §5) — there is no light mode
+ * to toggle to, so unlike apps/main and apps/lab-3d there is no dark: variant
+ * system here. One palette, always on.
+ *
+ * Slate neutral (--t-*), not the ink-* ramp the other two surfaces share —
+ * a deliberate exception (DESIGN §1): warm neutrals read as wrong in a
+ * terminal. Values and contrast ratios are DESIGN.md §5.1's, already
+ * verified — don't recompute them here.
+ */
+:root {
+  --t-bg: #0F172A;
+  --t-panel: #1E293B;
+  --t-fg: #F1F5F9;
+  --t-muted: #94A3B8;
+  --t-dim: #7A8AA0;
+  --t-accent: #3B82F6;
+  --t-dir: #38BDF8;
+  --t-ok: #4ADE80;
+  --t-err: #F87171;
+  --t-hint: #F5D90A;
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    background-color: var(--t-bg);
+    color: var(--t-fg);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/*
+ * Terminal Lab hampir nggak gerak, dan itu disengaja (DESIGN §6) — cuma
+ * kursor kedip (steps(1), keras bukan fade) dan output bertahap. Ini
+ * reduced-motion floor yang sama bentuknya kayak dua surface lain: kill
+ * transitions/animations, JS-driven typing effects diguard terpisah lewat
+ * useReducedMotion (bukan lewat CSS aja, sama seperti alasan di lab-3d).
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.01%, 100% {
+    opacity: 0;
+  }
+}
+
+.term-cursor {
+  animation: cursor-blink 1s steps(1) infinite;
+}
