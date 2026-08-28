@@ -1,110 +1,28 @@
 import {
   profile,
-  projects,
-  earlierWork,
   skills,
   achievements,
   education,
 } from '@zaidan/data'
 
 /**
- * Every piece of content EXCEPT the profile header and Experience, rendered
- * as a plain readable column.
+ * Every piece of content EXCEPT the profile header, Experience, and Projects,
+ * rendered as a plain readable column.
  *
- * Header and Experience are not here — both have a 3D treatment (ApproachScene
- * 3D-1, CorridorScene 3D-2) and a flat treatment, and App.jsx chooses between
- * them at the top level. Duplicating either here would be the "second markup"
- * lab-3d.md §4.3 warns against.
+ * Header, Experience, and Projects are not here — each has a 3D treatment
+ * (ApproachScene 3D-1, CorridorScene 3D-2, VaultScene 3D-3) and a flat
+ * treatment, and App.jsx chooses between them at the top level. Duplicating
+ * any of them here would be the "second markup" lab-3d.md §4.3 warns against.
  *
- * As more scenes ship (Vault 3D-3, Lattice/Case/Exit 3D-4), their sections
- * move out of this file the same way. This is not a fallback bolted on
- * afterwards — it is the content baseline scenes progressively wrap in 3D
- * chrome. PRD FR-15 (content parity) is checked against whatever App.jsx
- * renders in flat mode — see scripts/parity-check.mjs.
+ * As more scenes ship (Lattice/Case/Exit 3D-4), their sections move out of
+ * this file the same way. This is not a fallback bolted on afterwards — it
+ * is the content baseline scenes progressively wrap in 3D chrome. PRD FR-15
+ * (content parity) is checked against whatever App.jsx renders in flat mode
+ * — see scripts/parity-check.mjs.
  */
 export default function FlatContent() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-20">
-      <section aria-labelledby="projects-heading" className="mt-16">
-        <h2 id="projects-heading" className="font-display text-2xl font-semibold text-[var(--d-ink)]">
-          Projects
-        </h2>
-        <ul className="mt-6 grid gap-6 border-t border-[var(--d-line)] pt-6 sm:grid-cols-2">
-          {projects.map((p) => (
-            <li key={p.id} id={`project-${p.id}`} className="border border-[var(--d-line)] p-5">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="font-display text-base font-semibold text-[var(--d-ink)]">{p.title}</h3>
-                {p.internal && (
-                  <span className="rounded-full border border-[var(--d-line)] px-2 py-0.5 font-mono text-[10px] uppercase tracking-widest text-[var(--d-dim)]">
-                    Internal
-                  </span>
-                )}
-              </div>
-              <p className="mt-1 text-xs text-[var(--d-dim)]">
-                {p.role} · {p.year}
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-[var(--d-muted)]">{p.description}</p>
-              {p.highlights?.length > 0 && (
-                <ul className="mt-3 space-y-1.5">
-                  {p.highlights.map((h, i) => (
-                    <li key={i} className="text-[13px] leading-relaxed text-[var(--d-muted)]">
-                      {h}
-                    </li>
-                  ))}
-                </ul>
-              )}
-              <ul className="mt-4 flex flex-wrap gap-1.5">
-                {p.tech.map((t) => (
-                  <li
-                    key={t}
-                    className="rounded-full border border-[var(--d-line)] px-2 py-0.5 font-mono text-[11px] text-[var(--d-dim)]"
-                  >
-                    {t}
-                  </li>
-                ))}
-              </ul>
-              {p.links?.length > 0 && (
-                <div className="mt-4 flex flex-wrap gap-4">
-                  {p.links.map((l) => (
-                    <a
-                      key={l.label}
-                      href={l.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-sm font-medium text-[var(--d-accent)] underline underline-offset-4"
-                    >
-                      {l.label}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </li>
-          ))}
-        </ul>
-
-        <h3 className="mt-10 font-display text-lg font-semibold text-[var(--d-ink)]">Earlier work</h3>
-        <ul className="mt-4 divide-y divide-[var(--d-line)] border-y border-[var(--d-line)]">
-          {earlierWork.map((w) => (
-            <li key={w.title} className="flex flex-wrap items-baseline justify-between gap-2 py-3">
-              <span>
-                <a
-                  href={w.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="font-display text-sm font-semibold text-[var(--d-ink)] underline decoration-[var(--d-line)] underline-offset-4"
-                >
-                  {w.title}
-                </a>
-                <span className="ml-2 text-xs text-[var(--d-dim)]">{w.note}</span>
-              </span>
-              <span className="font-mono text-xs text-[var(--d-dim)]">
-                {w.year} · {w.tech}
-              </span>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section aria-labelledby="skills-heading" className="mt-16">
         <h2 id="skills-heading" className="font-display text-2xl font-semibold text-[var(--d-ink)]">
           Skills

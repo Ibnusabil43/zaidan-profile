@@ -41,7 +41,13 @@ const SURFACES = [{ name: '3D Lab', distDir: 'apps/lab-3d/dist' }]
 
 // How many even scroll steps to sample. Raise this if a future scene needs a
 // finer sweep to reveal everything it owns — don't special-case that scene.
-const SCROLL_STEPS = 12
+//
+// Raised from 12 to 60 when VaultScene (3D-3) shipped: unlike Corridor's
+// overlapping radius-2 gate window (any nearby sample still catches a gate),
+// Vault shows exactly one project at a time with no overlap between its six
+// segments — a sample spacing wider than a segment can skip one entirely.
+// 60 gives real headroom as more scenes (and segments) get added later.
+const SCROLL_STEPS = 60
 
 const CHROME_CANDIDATES = [
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -69,6 +75,7 @@ function requiredStrings() {
   }
   for (const p of data.projects) {
     items.push({ label: `project title: ${p.title}`, needle: p.title })
+    items.push({ label: `project subtitle: ${p.subtitle}`, needle: p.subtitle })
   }
   for (const w of data.earlierWork) {
     items.push({ label: `earlierWork: ${w.title}`, needle: w.title })
