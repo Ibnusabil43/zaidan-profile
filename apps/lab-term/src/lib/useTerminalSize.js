@@ -84,6 +84,8 @@ export function useTerminalSize() {
   return {
     containerRef,
     heightPercent,
+    minHeightPercent: MIN_HEIGHT_PERCENT,
+    maxHeightPercent: MAX_HEIGHT_PERCENT,
     state,
     resolvedHeight,
     toggleMinimized,

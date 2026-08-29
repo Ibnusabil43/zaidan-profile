@@ -5,7 +5,7 @@
  * preview pane above can react to the same numbers.
  */
 export default function TerminalWindow({ size, children }) {
-  const { state, toggleMinimized, toggleMaximized, dividerHandlers } = size
+  const { state, heightPercent, minHeightPercent, maxHeightPercent, toggleMinimized, toggleMaximized, dividerHandlers } = size
 
   return (
     <>
@@ -14,6 +14,9 @@ export default function TerminalWindow({ size, children }) {
           role="separator"
           aria-orientation="horizontal"
           aria-label="Resize terminal"
+          aria-valuenow={Math.round(heightPercent)}
+          aria-valuemin={minHeightPercent}
+          aria-valuemax={maxHeightPercent}
           tabIndex={0}
           className="h-1.5 shrink-0 cursor-row-resize touch-none"
           style={{ backgroundColor: 'rgba(148, 163, 184, 0.15)' }}

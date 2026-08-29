@@ -79,7 +79,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
       setInput('')
       return
     }
-    if (e.key === 'Tab') {
+    if (e.key === 'Tab' && !e.shiftKey) {
       e.preventDefault()
       const result = complete(root, cwd, input)
       if (!result) return
@@ -117,7 +117,13 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
 
   return (
     <div className="flex h-full flex-col font-mono text-sm" style={{ color: 'var(--t-fg)' }}>
-      <div className="flex-1 overflow-y-auto px-4 py-3" ref={scrollRef} onClick={focusInput}>
+      <div
+        className="flex-1 overflow-y-auto px-4 py-3"
+        ref={scrollRef}
+        onClick={focusInput}
+        aria-live="polite"
+        aria-atomic="false"
+      >
         {history.map((entry, i) =>
           entry.type === 'command' ? (
             <div key={i} className="flex gap-2">
