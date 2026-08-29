@@ -21,6 +21,7 @@
   --t-ok: #4ADE80;
   --t-err: #F87171;
   --t-hint: #F5D90A;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
@@ -33,6 +34,26 @@
     color: var(--t-fg);
     -webkit-font-smoothing: antialiased;
   }
+}
+
+/*
+ * Preview pane prose (DESIGN §5.3) — sans, larger, ~68ch max width. Contrast:
+ * --t-muted (6.96:1) and --t-dim (5.08:1) against --t-bg were computed at
+ * 14px mono (§5.1) and both already clear the 4.5:1 normal-text AA floor —
+ * prose text here is *larger*, which only relaxes that threshold (WCAG allows
+ * 3:1 at ≥18px/24px), so nothing needed recomputing, just confirming the
+ * existing numbers still cover the larger size (they do, with room over).
+ */
+.prose-doc {
+  font-family: var(--font-sans);
+  max-width: 68ch;
+}
+.prose-doc code {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  background-color: var(--t-panel);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 
 /*

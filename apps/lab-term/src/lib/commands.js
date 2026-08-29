@@ -78,8 +78,16 @@ function notFound(cmdName, arg, root, cwd, noun = 'file or directory') {
   return lines
 }
 
-/** Where `open` should send the browser for a given file node, if anywhere. */
-function openTarget(node) {
+/**
+ * Where `open` should send the browser for a given file node, if anywhere.
+ * `mainUrl` is the one piece of environment this pure module needs — the
+ * professional site's origin, for the resume file that lives there (PRD
+ * DR-6) — so it's threaded in as a parameter rather than reached for via
+ * `import.meta.env` directly, which would break running this file under
+ * plain Node (as its own tests, and the REPL checks in this phase's
+ * checkpoint, both do).
+ */
+function openTarget(node, mainUrl) {
   if (!node || node.type !== 'file') return { none: true }
   if (node.kind === 'project') {
     if (node.data.internal) return { internal: true }
@@ -87,16 +95,27 @@ function openTarget(node) {
     return { none: true }
   }
   if (node.kind === 'earlierWork') return { url: node.data.href, label: node.data.title }
+  if (node.kind === 'resume') {
+    if (!node.data.available) return { unavailable: true }
+    return { url: `${mainUrl}/${node.data.filename}`, label: node.data.label }
+  }
   return { unsupported: true }
 }
 
 /**
  * Runs one command line against `root` from `cwd`. Returns
- * `{ lines, cwd, clearScreen, openUrl }` — `cwd` is the (possibly unchanged)
- * new working directory, `openUrl` is set only when `open` resolves to a
- * real link the caller should navigate to.
+ * `{ lines, cwd, clearScreen, openUrl, previewable }` — `cwd` is the
+ * (possibly unchanged) new working directory, `openUrl` is set only when
+ * `open` resolves to a real link the caller should navigate to, and
+ * `previewable` is the file's path when `cat` succeeded on something the
+ * preview pane can show (TERM-C1/C3) — the caller decides whether to surface
+ * that as a `[ open in preview ]` affordance.
+ *
+ * `mainUrl` is optional and only reached for by `open` on the resume file;
+ * every other command works fine without it (matters for testing this file
+ * under plain Node, with no Vite env available).
  */
-export function runCommand(root, cwd, input) {
+export function runCommand(root, cwd, input, mainUrl) {
   const trimmed = input.trim()
   if (trimmed === '') return { lines: [], cwd }
 
@@ -146,7 +165,10 @@ export function runCommand(root, cwd, input) {
       const node = findNode(root, target)
       if (!node) return { lines: notFound('cat', arg, root, cwd), cwd }
       if (node.type === 'dir') return { lines: [line(`cat: ${arg}: Is a directory`, 'err')], cwd }
-      return { lines: node.render().split('\n').map((l) => line(l)), cwd }
+      if (node.binary) {
+        return { lines: [line(`cat: ${arg}: binary file — use 'open ${arg}' instead`, 'hint')], cwd, previewable: node.path }
+      }
+      return { lines: node.render().split('\n').map((l) => line(l)), cwd, previewable: node.path }
     }
 
     case 'open': {
@@ -154,9 +176,12 @@ export function runCommand(root, cwd, input) {
       const target = resolvePath(cwd, arg)
       const node = findNode(root, target)
       if (!node) return { lines: notFound('open', arg, root, cwd), cwd }
-      const result = openTarget(node)
+      const result = openTarget(node, mainUrl)
       if (result.internal) {
         return { lines: [line('This repository is internal — no public link available.', 'hint')], cwd }
+      }
+      if (result.unavailable) {
+        return { lines: [line(`${node.data.label} coming soon — not uploaded yet.`, 'hint')], cwd }
       }
       if (result.url) {
         return { lines: [line(`Opening ${result.label}: ${result.url}`, 'ok')], cwd, openUrl: result.url }

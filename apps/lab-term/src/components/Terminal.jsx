@@ -33,7 +33,7 @@ function displayPath(cwd) {
  * dikerjain"). Deferred rather than half-built against an unspecified
  * scope — see lab-term-roadmap.md's TERM-1 notes.
  */
-export default function Terminal({ root, cwd, history, onSubmit, focusTrigger }) {
+export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, onOpenPreview }) {
   const [input, setInput] = useState('')
   const [historyIndex, setHistoryIndex] = useState(null)
   const [completions, setCompletions] = useState(null)
@@ -131,6 +131,16 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger })
                   {l.text || ' '}
                 </div>
               ))}
+              {entry.previewable && (
+                <button
+                  type="button"
+                  onClick={() => onOpenPreview(entry.previewable)}
+                  className="mt-1 underline underline-offset-2"
+                  style={{ color: 'var(--t-accent)' }}
+                >
+                  [ open in preview ]
+                </button>
+              )}
             </div>
           )
         )}

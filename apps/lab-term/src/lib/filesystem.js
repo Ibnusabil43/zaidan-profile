@@ -20,8 +20,8 @@ function join(...parts) {
   return parts.filter(Boolean).join('/')
 }
 
-function file(name, path, kind, data, render) {
-  return { type: 'file', name, path, kind, data, render }
+function file(name, path, kind, data, render, binary = false) {
+  return { type: 'file', name, path, kind, data, render, binary }
 }
 
 function dir(name, path, children) {
@@ -52,6 +52,14 @@ function renderExperience(role) {
   return lines.join('\n')
 }
 
+// Wraps each item as inline code (`` `x` ``) — DESIGN §5.3 keeps stack/tech
+// tags mono even inside prose, and inline code is the one real-markdown
+// construct that means exactly that, so this isn't a hack layered on top of
+// markdown, it's markdown saying what it already means.
+function codeList(items) {
+  return items.map((t) => `\`${t}\``).join(', ')
+}
+
 function renderProject(project) {
   const lines = [
     `# ${project.title}`,
@@ -66,12 +74,12 @@ function renderProject(project) {
     lines.push('', 'Highlights:')
     for (const h of project.highlights) lines.push(`- ${h}`)
   }
-  lines.push('', `Stack: ${project.tech.join(', ')}`)
+  lines.push('', `Stack: ${codeList(project.tech)}`)
   if (project.internal) {
-    lines.push('', '[internal] — repository is private, no public link.')
+    lines.push('', '`[internal]` — repository is private, no public link.')
   } else if (project.links?.length > 0) {
     lines.push('', 'Links:')
-    for (const l of project.links) lines.push(`- ${l.label}: ${l.href}`)
+    for (const l of project.links) lines.push(`- [${l.label}](${l.href})`)
   }
   return lines.join('\n')
 }
@@ -84,7 +92,7 @@ function renderEarlierWork(work) {
     '',
     work.note,
     '',
-    `Code: ${work.href}`,
+    `- [Code](${work.href})`,
   ].join('\n')
 }
 
@@ -115,6 +123,19 @@ function renderEducation(educationList) {
     return lines.join('\n')
   })
   return blocks.join('\n\n---\n\n')
+}
+
+/**
+ * `resume.pdf` isn't a document, so this isn't really "content" the way the
+ * other `render()` functions are — it exists so `cat` has something correct
+ * to say (§2.1: "cat nolak sambil ngajarin") if someone tries it on a binary
+ * file. The actual UI (download card + button) is Preview.jsx's job, keyed
+ * off `kind === 'resume'`, not off parsing this string.
+ */
+function renderResume(resume) {
+  return resume.available
+    ? `Binary file (${resume.filename}) — use 'open ${resume.filename}' instead.`
+    : `Binary file (${resume.filename}) — not uploaded yet.`
 }
 
 function renderContact(profile) {
@@ -189,6 +210,7 @@ export function buildFilesystem(data) {
 
   const root = dir('~', '', [
     file('README.md', 'README.md', 'profile', profile, () => renderProfile(profile)),
+    file(profile.resume.filename, profile.resume.filename, 'resume', profile.resume, () => renderResume(profile.resume), true),
     experienceDir,
     projectsDir,
     skillsDir,

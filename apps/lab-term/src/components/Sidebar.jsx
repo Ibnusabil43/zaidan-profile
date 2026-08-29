@@ -36,7 +36,7 @@ function Row({ node, depth, cwd, expanded, onToggle, onCommand }) {
         )}
         <button
           type="button"
-          onClick={() => onCommand(isDir ? `cd ${node.path === '' ? '~' : node.path}` : `cat ${node.path}`)}
+          onClick={() => onCommand(isDir ? `cd ${node.path === '' ? '~' : node.path}` : `cat ${node.path}`, node)}
           className="min-h-11 flex-1 truncate py-2 pr-3 text-left text-sm"
           style={{ color: isDir ? 'var(--t-dir)' : 'var(--t-fg)' }}
         >
