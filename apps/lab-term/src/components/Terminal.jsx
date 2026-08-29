@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
-import { runCommand } from '../lib/commands.js'
+import { complete } from '../lib/completion.js'
+import { getSuggestions } from '../lib/suggestions.js'
+import { findNode } from '../lib/filesystem.js'
 import { useReducedMotion } from '../lib/useReducedMotion.js'
 
 const TONE_COLOR = {
@@ -16,10 +18,11 @@ function displayPath(cwd) {
 }
 
 /**
- * History + prompt. A real `<input>`, not a fake cursor over a div — that's
- * what gives this native keyboard handling, IME support, and a screen
- * reader announcing it as a textbox for free, instead of reimplementing all
- * of that by hand.
+ * History + prompt. `cwd`/`history`/`onSubmit` come from useShell (TERM-2) —
+ * this component no longer owns the session itself, so the sidebar can drive
+ * it too. A real `<input>`, not a fake cursor over a div — that's what gives
+ * this native keyboard handling, IME support, and a screen reader announcing
+ * it as a textbox for free, instead of reimplementing all of that by hand.
  *
  * Output renders instantly rather than typing itself out character by
  * character. DESIGN.md §6 names "output muncul bertahap" as one of this
@@ -30,10 +33,10 @@ function displayPath(cwd) {
  * dikerjain"). Deferred rather than half-built against an unspecified
  * scope — see lab-term-roadmap.md's TERM-1 notes.
  */
-export default function Terminal({ root, cwd, onCwdChange, initialEntries }) {
-  const [history, setHistory] = useState(initialEntries ?? [])
+export default function Terminal({ root, cwd, history, onSubmit, focusTrigger }) {
   const [input, setInput] = useState('')
   const [historyIndex, setHistoryIndex] = useState(null)
+  const [completions, setCompletions] = useState(null)
   const commandLog = useRef([])
   const scrollRef = useRef(null)
   const inputRef = useRef(null)
@@ -43,26 +46,31 @@ export default function Terminal({ root, cwd, onCwdChange, initialEntries }) {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight
   }, [history])
 
+  // Re-focuses the input when `focusTrigger` (App.jsx passes `sidebarOpen`)
+  // transitions true → false — closing the mobile drawer (via the sidebar's
+  // own command, or tapping the backdrop) hands keyboard focus straight
+  // back to the prompt instead of leaving it stranded on whatever the
+  // backdrop click landed on. Deliberately not on every change: refocusing
+  // when the drawer *opens* would yank focus away from someone about to Tab
+  // through the sidebar itself. Found by testing the close path for real —
+  // without this, closing the drawer silently dropped focus and the next
+  // keystrokes went nowhere.
+  const wasOpen = useRef(focusTrigger)
+  useEffect(() => {
+    if (wasOpen.current && !focusTrigger) inputRef.current?.focus()
+    wasOpen.current = focusTrigger
+  }, [focusTrigger])
+
   function focusInput() {
     inputRef.current?.focus()
   }
 
   function submit(raw) {
     const text = raw.trim()
-    const entry = { type: 'command', cwd, text }
-    const result = runCommand(root, cwd, text)
-
     if (text) commandLog.current = [...commandLog.current, text]
     setHistoryIndex(null)
-
-    if (result.clearScreen) {
-      setHistory([])
-    } else {
-      setHistory((h) => [...h, entry, { type: 'output', lines: result.lines }])
-    }
-
-    if (result.cwd !== cwd) onCwdChange(result.cwd)
-    if (result.openUrl) window.open(result.openUrl, '_blank', 'noopener,noreferrer')
+    setCompletions(null)
+    onSubmit(raw)
   }
 
   function onKeyDown(e) {
@@ -70,6 +78,17 @@ export default function Terminal({ root, cwd, onCwdChange, initialEntries }) {
       submit(input)
       setInput('')
       return
+    }
+    if (e.key === 'Tab') {
+      e.preventDefault()
+      const result = complete(root, cwd, input)
+      if (!result) return
+      setInput(result.input)
+      setCompletions(result.candidates)
+      return
+    }
+    if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown') {
+      setCompletions(null)
     }
     if (e.key === 'ArrowUp') {
       e.preventDefault()
@@ -93,60 +112,89 @@ export default function Terminal({ root, cwd, onCwdChange, initialEntries }) {
     }
   }
 
+  const cwdNode = findNode(root, cwd)
+  const suggestions = cwdNode ? getSuggestions(root, cwd, cwdNode) : []
+
   return (
-    <div
-      className="flex h-full flex-col overflow-y-auto px-4 py-3 font-mono text-sm"
-      style={{ color: 'var(--t-fg)' }}
-      ref={scrollRef}
-      onClick={focusInput}
-    >
-      {history.map((entry, i) =>
-        entry.type === 'command' ? (
-          <div key={i} className="flex gap-2">
-            <span style={{ color: 'var(--t-accent)' }}>{displayPath(entry.cwd)} $</span>
-            <span>{entry.text}</span>
-          </div>
-        ) : (
-          <div key={i}>
-            {entry.lines.map((l, j) => (
-              <div key={j} style={{ color: TONE_COLOR[l.tone] ?? TONE_COLOR.fg, whiteSpace: 'pre-wrap' }}>
-                {l.text || ' '}
-              </div>
+    <div className="flex h-full flex-col font-mono text-sm" style={{ color: 'var(--t-fg)' }}>
+      <div className="flex-1 overflow-y-auto px-4 py-3" ref={scrollRef} onClick={focusInput}>
+        {history.map((entry, i) =>
+          entry.type === 'command' ? (
+            <div key={i} className="flex gap-2">
+              <span style={{ color: 'var(--t-accent)' }}>{displayPath(entry.cwd)} $</span>
+              <span>{entry.text}</span>
+            </div>
+          ) : (
+            <div key={i}>
+              {entry.lines.map((l, j) => (
+                <div key={j} style={{ color: TONE_COLOR[l.tone] ?? TONE_COLOR.fg, whiteSpace: 'pre-wrap' }}>
+                  {l.text || ' '}
+                </div>
+              ))}
+            </div>
+          )
+        )}
+      </div>
+
+      <div className="border-t px-4 pt-2" style={{ borderColor: 'rgba(148, 163, 184, 0.15)' }}>
+        {suggestions.length > 0 && (
+          <div className="mb-2 flex flex-wrap gap-2">
+            {suggestions.map((s) => (
+              <button
+                key={s.label}
+                type="button"
+                onClick={() => submit(s.command)}
+                className="rounded border px-2 py-1 text-xs transition-colors"
+                style={{ borderColor: 'rgba(148, 163, 184, 0.25)', color: 'var(--t-muted)' }}
+              >
+                {s.label}
+              </button>
             ))}
           </div>
-        )
-      )}
+        )}
 
-      <div className="flex gap-2 pb-2">
-        <span style={{ color: 'var(--t-accent)' }}>{displayPath(cwd)} $</span>
-        <div className="relative flex-1">
-          <input
-            ref={inputRef}
-            autoFocus
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={onKeyDown}
-            className="w-full bg-transparent outline-none"
-            style={{ color: 'var(--t-fg)', caretColor: 'transparent' }}
-            spellCheck={false}
-            autoCapitalize="off"
-            autoCorrect="off"
-            aria-label="Terminal command input"
-          />
-          <span
-            aria-hidden="true"
-            data-testid="cursor"
-            className={reducedMotion ? '' : 'term-cursor'}
-            style={{
-              position: 'absolute',
-              left: `${input.length}ch`,
-              top: 0,
-              width: '0.6em',
-              height: '1.2em',
-              backgroundColor: 'var(--t-fg)',
-              pointerEvents: 'none',
-            }}
-          />
+        {completions && completions.length > 0 && (
+          <div className="mb-1 flex flex-wrap gap-x-4 gap-y-0.5 text-xs" style={{ color: 'var(--t-dim)' }}>
+            {completions.map((c) => (
+              <span key={c}>{c}</span>
+            ))}
+          </div>
+        )}
+
+        <div className="flex gap-2 pb-3">
+          <span style={{ color: 'var(--t-accent)' }}>{displayPath(cwd)} $</span>
+          <div className="relative flex-1">
+            <input
+              ref={inputRef}
+              autoFocus
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value)
+                setCompletions(null)
+              }}
+              onKeyDown={onKeyDown}
+              className="w-full bg-transparent outline-none"
+              style={{ color: 'var(--t-fg)', caretColor: 'transparent' }}
+              spellCheck={false}
+              autoCapitalize="off"
+              autoCorrect="off"
+              aria-label="Terminal command input"
+            />
+            <span
+              aria-hidden="true"
+              data-testid="cursor"
+              className={reducedMotion ? '' : 'term-cursor'}
+              style={{
+                position: 'absolute',
+                left: `${input.length}ch`,
+                top: 0,
+                width: '0.6em',
+                height: '1.2em',
+                backgroundColor: 'var(--t-fg)',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
         </div>
       </div>
     </div>

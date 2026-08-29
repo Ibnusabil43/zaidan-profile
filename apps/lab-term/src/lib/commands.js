@@ -1,4 +1,5 @@
 import { findNode, resolvePath } from './filesystem.js'
+import { closestMatch } from './levenshtein.js'
 
 /**
  * Eight commands, no more (lab-term.md §2.1) — a command that isn't load-
@@ -11,9 +12,6 @@ import { findNode, resolvePath } from './filesystem.js'
  * — and the React layer is the only place that actually touches
  * `window.open` or mutates state. That split is what makes this testable
  * without a browser.
- *
- * `Did you mean:` suggestions for unknown commands/paths (TERM-B5) are
- * deliberately NOT here yet — that's the next phase's story, not this one's.
  */
 export const COMMANDS = [
   { name: 'ls', usage: 'ls [path]', help: 'list a directory' },
@@ -25,6 +23,25 @@ export const COMMANDS = [
   { name: 'help', usage: 'help', help: 'list commands' },
   { name: 'open', usage: 'open <path>', help: "open a project's link" },
 ]
+
+export const COMMAND_NAMES = COMMANDS.map((c) => c.name)
+
+/**
+ * `Did you mean: X` for a bad path (TERM-B5) — the closest sibling name in
+ * whichever directory the bad path's parent resolves to. `cd projekt` from
+ * root suggests `projects/` because `projekt`'s parent (root) has a child
+ * close enough in edit distance; a path with no plausible neighbor (or whose
+ * parent doesn't exist either) gets no suggestion rather than a wrong one.
+ */
+function suggestPath(root, cwd, badArg) {
+  const lastSlash = badArg.lastIndexOf('/')
+  const parentArg = lastSlash >= 0 ? badArg.slice(0, lastSlash) : ''
+  const segment = lastSlash >= 0 ? badArg.slice(lastSlash + 1) : badArg
+  const parent = findNode(root, resolvePath(cwd, parentArg || '.'))
+  if (!parent || parent.type !== 'dir') return null
+  const names = parent.children.map((c) => (c.type === 'dir' ? `${c.name}/` : c.name))
+  return closestMatch(segment, names)
+}
 
 function line(text, tone = 'fg') {
   return { text, tone }
@@ -51,6 +68,14 @@ function treeLines(node, prefix = '', isRoot = true) {
 
 function displayPath(cwd) {
   return cwd === '' ? '~' : `~/${cwd}`
+}
+
+/** `X: no such file or directory` plus an optional `Did you mean:` hint line. */
+function notFound(cmdName, arg, root, cwd, noun = 'file or directory') {
+  const lines = [line(`${cmdName}: ${arg}: No such ${noun}`, 'err')]
+  const suggestion = suggestPath(root, cwd, arg)
+  if (suggestion) lines.push(line(`Did you mean: ${suggestion}`, 'hint'))
+  return lines
 }
 
 /** Where `open` should send the browser for a given file node, if anywhere. */
@@ -94,7 +119,7 @@ export function runCommand(root, cwd, input) {
     case 'ls': {
       const target = arg ? resolvePath(cwd, arg) : cwd
       const node = findNode(root, target)
-      if (!node) return { lines: [line(`ls: ${arg}: No such file or directory`, 'err')], cwd }
+      if (!node) return { lines: notFound('ls', arg, root, cwd), cwd }
       if (node.type === 'file') return { lines: [line(node.name)], cwd }
       const entries = listing(node)
       return { lines: entries.length > 0 ? entries : [line('(empty)', 'dim')], cwd }
@@ -103,14 +128,14 @@ export function runCommand(root, cwd, input) {
     case 'tree': {
       const target = arg ? resolvePath(cwd, arg) : cwd
       const node = findNode(root, target)
-      if (!node) return { lines: [line(`tree: ${arg}: No such file or directory`, 'err')], cwd }
+      if (!node) return { lines: notFound('tree', arg, root, cwd), cwd }
       return { lines: treeLines(node), cwd }
     }
 
     case 'cd': {
       const target = resolvePath(cwd, arg || '~')
       const node = findNode(root, target)
-      if (!node) return { lines: [line(`cd: ${arg}: No such directory`, 'err')], cwd }
+      if (!node) return { lines: notFound('cd', arg, root, cwd, 'directory'), cwd }
       if (node.type !== 'dir') return { lines: [line(`cd: ${arg}: Not a directory`, 'err')], cwd }
       return { lines: [], cwd: target }
     }
@@ -119,7 +144,7 @@ export function runCommand(root, cwd, input) {
       if (!arg) return { lines: [line('usage: cat <path>', 'hint')], cwd }
       const target = resolvePath(cwd, arg)
       const node = findNode(root, target)
-      if (!node) return { lines: [line(`cat: ${arg}: No such file or directory`, 'err')], cwd }
+      if (!node) return { lines: notFound('cat', arg, root, cwd), cwd }
       if (node.type === 'dir') return { lines: [line(`cat: ${arg}: Is a directory`, 'err')], cwd }
       return { lines: node.render().split('\n').map((l) => line(l)), cwd }
     }
@@ -128,7 +153,7 @@ export function runCommand(root, cwd, input) {
       if (!arg) return { lines: [line('usage: open <path>', 'hint')], cwd }
       const target = resolvePath(cwd, arg)
       const node = findNode(root, target)
-      if (!node) return { lines: [line(`open: ${arg}: No such file or directory`, 'err')], cwd }
+      if (!node) return { lines: notFound('open', arg, root, cwd), cwd }
       const result = openTarget(node)
       if (result.internal) {
         return { lines: [line('This repository is internal — no public link available.', 'hint')], cwd }
@@ -142,7 +167,11 @@ export function runCommand(root, cwd, input) {
       return { lines: [line('No public link available.', 'hint')], cwd }
     }
 
-    default:
-      return { lines: [line(`${name}: command not found`, 'err')], cwd }
+    default: {
+      const lines = [line(`${name}: command not found`, 'err')]
+      const suggestion = closestMatch(name, COMMAND_NAMES)
+      if (suggestion) lines.push(line(`Did you mean: ${suggestion}`, 'hint'))
+      return { lines, cwd }
+    }
   }
 }
