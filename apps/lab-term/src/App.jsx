@@ -6,6 +6,7 @@ import { useRouter } from './lib/useRouter.js'
 import { useShell } from './lib/useShell.js'
 import { useMediaQuery } from './lib/useMediaQuery.js'
 import { useTerminalSize } from './lib/useTerminalSize.js'
+import { useTheme } from './lib/useTheme.js'
 import TitleBar from './components/TitleBar.jsx'
 import StatusBar from './components/StatusBar.jsx'
 import Terminal from './components/Terminal.jsx'
@@ -69,7 +70,8 @@ export default function App() {
   const root = useMemo(() => buildFilesystem(data), [])
   const { initialPath, syncPath } = useRouter()
   const [initial] = useState(() => resolveInitial(root, initialPath))
-  const shell = useShell(root, initial, MAIN_URL)
+  const { theme, toggleTheme, setTheme } = useTheme()
+  const shell = useShell(root, initial, MAIN_URL, theme, setTheme)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const isDesktop = useMediaQuery(DESKTOP_QUERY)
   const terminalSize = useTerminalSize()
@@ -104,7 +106,13 @@ export default function App() {
 
   return (
     <div className="flex h-screen flex-col" style={{ backgroundColor: 'var(--t-bg)' }}>
-      <TitleBar cwd={shell.cwd} onToggleSidebar={() => setSidebarOpen((v) => !v)} />
+      <TitleBar
+        cwd={shell.cwd}
+        onToggleSidebar={() => setSidebarOpen((v) => !v)}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+        mainUrl={MAIN_URL}
+      />
       <div className="flex min-h-0 flex-1">
         {isDesktop ? (
           <>
@@ -112,7 +120,7 @@ export default function App() {
               <Sidebar root={root} cwd={shell.cwd} onCommand={(cmd, node) => runFromSidebar(cmd, node)} />
             </div>
             <div className="flex min-w-0 flex-1 flex-col" ref={terminalSize.containerRef}>
-              <div className="min-h-0 flex-1">{previewPane}</div>
+              <div className="min-h-0 flex-1 overflow-hidden">{previewPane}</div>
               <TerminalWindow size={terminalSize}>{terminalPane}</TerminalWindow>
             </div>
           </>

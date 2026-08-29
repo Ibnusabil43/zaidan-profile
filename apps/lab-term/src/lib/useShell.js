@@ -12,8 +12,12 @@ import { runCommand } from './commands.js'
  * Deliberately does NOT own `input` or arrow-key history recall — those are
  * about the prompt's own keyboard behavior, not the session, and stay local
  * to Terminal.jsx.
+ *
+ * `theme`/`onThemeChange` are threaded through the same way `mainUrl` is —
+ * one extra piece of environment `runCommand` needs (for the `theme`
+ * command) without commands.js knowing `localStorage` or React state exist.
  */
-export function useShell(root, initial, mainUrl) {
+export function useShell(root, initial, mainUrl, theme, onThemeChange) {
   const [cwd, setCwd] = useState(initial.cwd)
   const [history, setHistory] = useState(initial.entries ?? [])
   const [previewPath, setPreviewPath] = useState(initial.previewPath ?? null)
@@ -21,7 +25,7 @@ export function useShell(root, initial, mainUrl) {
   function submit(raw) {
     const text = raw.trim()
     const entry = { type: 'command', cwd, text }
-    const result = runCommand(root, cwd, text, mainUrl)
+    const result = runCommand(root, cwd, text, mainUrl, theme)
 
     if (result.clearScreen) {
       setHistory([])
@@ -31,6 +35,7 @@ export function useShell(root, initial, mainUrl) {
 
     if (result.cwd !== cwd) setCwd(result.cwd)
     if (result.openUrl) window.open(result.openUrl, '_blank', 'noopener,noreferrer')
+    if (result.setTheme) onThemeChange(result.setTheme)
     return result
   }
 

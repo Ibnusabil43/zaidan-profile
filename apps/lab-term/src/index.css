@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
 /*
- * Terminal Lab is gelap by design (NFR-3, DESIGN §5) — there is no light mode
- * to toggle to, so unlike apps/main and apps/lab-3d there is no dark: variant
- * system here. One palette, always on.
+ * Revised — light mode added (user request, 29 Ags 2026). Dark stays the
+ * default identity (useTheme.js), but every color routes through these
+ * --t-* custom properties already, so — same trick lab-3d used — one
+ * `html.light` override block covers every component; no `dark:`/`light:`
+ * variant classes needed anywhere else in this app.
  *
  * Slate neutral (--t-*), not the ink-* ramp the other two surfaces share —
  * a deliberate exception (DESIGN §1): warm neutrals read as wrong in a
- * terminal. Values and contrast ratios are DESIGN.md §5.1's, already
+ * terminal. Values and contrast ratios are DESIGN.md §5.1/§5.4's, already
  * verified — don't recompute them here.
  */
 :root {
@@ -22,6 +24,29 @@
   --t-err: #F87171;
   --t-hint: #F5D90A;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/*
+ * Light palette — every value computed against --t-bg (#F8FAFC), not
+ * guessed (DESIGN.md's own discipline). `dir`, `ok`, and `hint` all needed
+ * darker shades than their obvious Tailwind swatch to clear 4.5:1 on a
+ * light background; `hint` specifically can't just follow Tailwind's
+ * amber/yellow scale down in lightness — it drifts into the banned 20–45°
+ * orange band as it darkens (the same trap DESIGN §5.1 already documented
+ * for dark mode's hint), so it's held at hue 53° via direct HSL, not picked
+ * from a swatch.
+ */
+html.light {
+  --t-bg: #F8FAFC;
+  --t-panel: #F1F5F9;
+  --t-fg: #0F172A;
+  --t-muted: #475569;
+  --t-dim: #5B6B84;
+  --t-accent: #2563EB;
+  --t-dir: #0369A1;
+  --t-ok: #15803D;
+  --t-err: #DC2626;
+  --t-hint: #7F720A;
 }
 
 @layer base {

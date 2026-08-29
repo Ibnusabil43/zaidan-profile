@@ -2,9 +2,20 @@ import { findNode, resolvePath } from './filesystem.js'
 import { closestMatch } from './levenshtein.js'
 
 /**
- * Eight commands, no more (lab-term.md §2.1) — a command that isn't load-
- * bearing for reading content is a memorization tax with no payoff. Adding
- * a ninth needs to answer "what content is unreachable without this."
+ * Eight commands for reading content, no more (lab-term.md §2.1) — a command
+ * that isn't load-bearing for reading content is a memorization tax with no
+ * payoff. Adding one of those needs to answer "what content is unreachable
+ * without this."
+ *
+ * `theme` is a deliberate ninth, added 29 Ags 2026 on direct user request —
+ * different in kind from the eight above, not a content-navigation command,
+ * so it doesn't answer to that same bar. It exists because the shell *is*
+ * the interface here (§1 "SHELL") and a mouse-only toggle button would be
+ * the one piece of this app's own chrome you couldn't drive by typing. Contrast
+ * with `[ open in preview ]` (§2.3), which deliberately stayed a button and
+ * not a command — that one's a shortcut to content already reachable through
+ * `cat`, so a command would've been pure duplication; `theme` has no other
+ * typed path to it at all.
  *
  * Kept DOM-free and side-effect-free on purpose, same discipline as
  * corridorLayout.js in the 3D Lab: `runCommand` returns a plain description
@@ -22,6 +33,7 @@ export const COMMANDS = [
   { name: 'clear', usage: 'clear', help: 'clear the screen' },
   { name: 'help', usage: 'help', help: 'list commands' },
   { name: 'open', usage: 'open <path>', help: "open a project's link" },
+  { name: 'theme', usage: 'theme [dark|light]', help: 'switch color theme' },
 ]
 
 export const COMMAND_NAMES = COMMANDS.map((c) => c.name)
@@ -113,9 +125,12 @@ function openTarget(node, mainUrl) {
  *
  * `mainUrl` is optional and only reached for by `open` on the resume file;
  * every other command works fine without it (matters for testing this file
- * under plain Node, with no Vite env available).
+ * under plain Node, with no Vite env available). `theme` is the current
+ * theme string ('dark'|'light'), optional the same way — only `theme` (the
+ * command) reads it, and it defaults to 'dark' so this still runs under
+ * plain Node with no React state behind it.
  */
-export function runCommand(root, cwd, input, mainUrl) {
+export function runCommand(root, cwd, input, mainUrl, theme = 'dark') {
   const trimmed = input.trim()
   if (trimmed === '') return { lines: [], cwd }
 
@@ -169,6 +184,15 @@ export function runCommand(root, cwd, input, mainUrl) {
         return { lines: [line(`cat: ${arg}: binary file — use 'open ${arg}' instead`, 'hint')], cwd, previewable: node.path }
       }
       return { lines: node.render().split('\n').map((l) => line(l)), cwd, previewable: node.path }
+    }
+
+    case 'theme': {
+      if (arg && arg !== 'dark' && arg !== 'light') {
+        return { lines: [line('usage: theme [dark|light]', 'hint')], cwd }
+      }
+      const next = arg || (theme === 'dark' ? 'light' : 'dark')
+      if (next === theme) return { lines: [line(`theme: already ${theme}`, 'dim')], cwd }
+      return { lines: [line(`theme: switched to ${next}`, 'ok')], cwd, setTheme: next }
     }
 
     case 'open': {
