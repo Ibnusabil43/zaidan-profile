@@ -10,8 +10,10 @@
   "scripts": {
     "dev": "npm run dev -w @zaidan/main",
     "dev:lab": "npm run dev -w @zaidan/lab",
+    "dev:term": "npm run dev -w @zaidan/lab-term",
     "build": "npm run build -w @zaidan/main && npm run build -w @zaidan/lab",
     "build:main": "npm run build -w @zaidan/main",
-    "build:lab": "npm run build -w @zaidan/lab"
+    "build:lab": "npm run build -w @zaidan/lab",
+    "build:term": "npm run build -w @zaidan/lab-term"
   }
 }
