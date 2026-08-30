@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --t-bg: #0F172A;
+        --t-panel: #1E293B;
+        --t-fg: #F1F5F9;
+        --t-muted: #94A3B8;
+        --t-dim: #7A8AA0;
+        --t-accent: #3B82F6;
+        --t-dir: #38BDF8;
+        --t-ok: #4ADE80;
+        --t-err: #F87171;
+        --t-hint: #F5D90A;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: var(--t-bg);
+        color: var(--t-fg);
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        position: relative;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      .window {
+        position: absolute;
+        inset: 56px 64px;
+        border-radius: 10px;
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: var(--t-bg);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 40px 90px -30px rgba(0, 0, 0, 0.65);
+      }
+      .titlebar {
+        height: 46px;
+        flex-shrink: 0;
+        background: var(--t-panel);
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 22px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+        font-size: 15px;
+        color: var(--t-muted);
+      }
+      .dots { display: flex; gap: 8px; }
+      .dot { width: 12px; height: 12px; border-radius: 999px; opacity: 0.6; }
+      .dot.err { background: var(--t-err); }
+      .dot.hint { background: var(--t-hint); }
+      .dot.ok { background: var(--t-ok); }
+      .path { color: var(--t-fg); }
+      .body { flex: 1; padding: 40px 48px; display: flex; flex-direction: column; gap: 20px; font-size: 25px; line-height: 1.55; }
+      .line { display: flex; gap: 14px; }
+      .prompt { color: var(--t-accent); }
+      .dir { color: var(--t-dir); }
+      .ok { color: var(--t-ok); }
+      .muted { color: var(--t-muted); }
+      .dim { color: var(--t-dim); }
+      .name { font-family: "Inter", ui-sans-serif, sans-serif; font-weight: 700; font-size: 30px; color: var(--t-fg); }
+      .role { font-family: "Inter", ui-sans-serif, sans-serif; font-weight: 500; font-size: 22px; color: var(--t-muted); margin-top: 2px; }
+      .foot {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        font-size: 18px;
+        color: var(--t-dim);
+        letter-spacing: 0.04em;
+        padding-top: 8px;
+      }
+      .cursor { display: inline-block; width: 13px; height: 26px; background: var(--t-fg); vertical-align: -5px; }
+    </style>
+  </head>
+  <body>
+    <div class="window">
+      <div class="titlebar">
+        <div class="dots">
+          <span class="dot err"></span>
+          <span class="dot hint"></span>
+          <span class="dot ok"></span>
+        </div>
+        <span class="path">zaidan@portfolio: ~</span>
+      </div>
+      <div class="body">
+        <div class="line"><span class="prompt">~ $</span><span>cd portfolio</span></div>
+        <div class="line"><span class="prompt">~/portfolio $</span><span>ls</span></div>
+        <div class="line" style="padding-left: 168px; gap: 28px;">
+          <span class="dir">experience/</span><span class="dir">projects/</span><span class="dir">skills/</span><span class="dir">achievements/</span>
+        </div>
+        <div class="line"><span class="prompt">~/portfolio $</span><span>cat README.md</span></div>
+        <div style="padding-left: 168px; display: flex; flex-direction: column; gap: 2px;">
+          <span class="name">Zaidan Ibnusabil Iryanto<span class="cursor"></span></span>
+          <span class="role">Backend Engineer @ BRI · Core Banking · Full-Stack Developer</span>
+        </div>
+        <div class="foot">
+          <span class="ok">Portfolio, as a filesystem you read with <span class="muted">cd</span>, <span class="muted">ls</span>, and <span class="muted">cat</span>.</span>
+          <span>github.com/ibnusabil43</span>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -6,6 +6,15 @@ export const profile = {
   github: "https://github.com/ibnusabil43",
   status: "Backend Engineer @ BRI · Jakarta, ID",
   roles: ["Backend Engineer", "Core Banking", "Full-Stack Developer"],
+  // PRD DR-6 / FR-25: the file itself lives once, in apps/main/public/ —
+  // this is metadata only. `available: false` until the PDF actually exists;
+  // every surface must render a disabled, honestly-labeled button rather
+  // than a link that 404s (same pattern as FR-8/PRO-B1's project screenshots).
+  resume: {
+    filename: "resume.pdf",
+    label: "Download Resume",
+    available: false,
+  },
   summary:
     "Backend engineer at Bank Rakyat Indonesia, working on Temenos T24 core banking: batch services, InfoBasic routines, and the integrations between T24 and external delivery channels. Outside the bank I design and ship internal systems end to end, from Next.js dashboards to Python scoring services and the developer tooling my own team uses. Most drawn to problems where the tooling doesn't exist yet."
 };
