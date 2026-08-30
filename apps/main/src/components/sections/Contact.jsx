@@ -14,7 +14,7 @@ export default function Contact() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-[0.25em] text-ink-400 dark:text-ink-400">
-            06 / Contact
+            07 / Contact
           </p>
           <h2 className="mt-6 font-display text-[clamp(2.5rem,8vw,6.5rem)] font-bold leading-[0.95] tracking-tight text-ink-950 text-balance dark:text-ink-50">
             Let's build

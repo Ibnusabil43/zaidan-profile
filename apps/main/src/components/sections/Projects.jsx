@@ -3,7 +3,6 @@ import SectionHeader from '../ui/SectionHeader'
 import ProjectCard from '../ui/ProjectCard'
 import Reveal from '../ui/Reveal'
 import FillerCell, { fillerCount } from '../ui/FillerCell'
-import LabLink from '../LabLink'
 import { projects, earlierWork } from '@zaidan/data'
 
 const GRID =
@@ -123,8 +122,6 @@ export default function Projects() {
             ))}
           </ul>
         )}
-
-        <LabLink />
       </div>
     </section>
   )

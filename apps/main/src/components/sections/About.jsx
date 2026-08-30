@@ -29,7 +29,7 @@ export default function About() {
                 />
               </div>
               <p className="mt-3 font-mono text-[11px] uppercase tracking-widest text-ink-400 dark:text-ink-400">
-                Zaidan I. Iryanto — 2025
+                Zaidan I. Iryanto, 2025
               </p>
             </div>
           </Reveal>
