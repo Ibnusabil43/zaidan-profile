@@ -35,6 +35,7 @@ function displayPath(cwd) {
  */
 export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, onOpenPreview }) {
   const [input, setInput] = useState('')
+  const [caretPos, setCaretPos] = useState(0)
   const [historyIndex, setHistoryIndex] = useState(null)
   const [completions, setCompletions] = useState(null)
   const commandLog = useRef([])
@@ -65,6 +66,30 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
     inputRef.current?.focus()
   }
 
+  // The visual cursor block doesn't ride on the real (invisible) caret —
+  // `caretColor: transparent` on the input hides it on purpose, since a
+  // native caret and this block blinking independently would look like two
+  // cursors. Bug found by testing real arrow-key navigation, not caught by
+  // reading the code: the block was hardcoded to `input.length`, so
+  // Left/Right (and clicking mid-text) moved the real caret but left the
+  // visible block stranded at the end. React's `onSelect` prop looked like
+  // the fix but doesn't reliably fire for a plain collapsed-caret move (no
+  // actual text selected) in this setup — verified directly: a
+  // `setSelectionRange` call updates `input.selectionStart` but never
+  // triggers `onSelect`. `document`'s native `selectionchange` event does
+  // fire every time, so that's what this listens to instead — scoped to
+  // "only while this input is focused" so it doesn't react to selection
+  // changes elsewhere on the page (the sidebar, the history pane).
+  useEffect(() => {
+    function onSelectionChange() {
+      if (document.activeElement === inputRef.current) {
+        setCaretPos(inputRef.current.selectionStart ?? 0)
+      }
+    }
+    document.addEventListener('selectionchange', onSelectionChange)
+    return () => document.removeEventListener('selectionchange', onSelectionChange)
+  }, [])
+
   function submit(raw) {
     const text = raw.trim()
     if (text) commandLog.current = [...commandLog.current, text]
@@ -77,6 +102,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
     if (e.key === 'Enter') {
       submit(input)
       setInput('')
+      setCaretPos(0)
       return
     }
     if (e.key === 'Tab' && !e.shiftKey) {
@@ -84,6 +110,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
       const result = complete(root, cwd, input)
       if (!result) return
       setInput(result.input)
+      setCaretPos(result.input.length)
       setCompletions(result.candidates)
       return
     }
@@ -96,6 +123,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
       const nextIndex = historyIndex === null ? commandLog.current.length - 1 : Math.max(0, historyIndex - 1)
       setHistoryIndex(nextIndex)
       setInput(commandLog.current[nextIndex])
+      setCaretPos(commandLog.current[nextIndex].length)
       return
     }
     if (e.key === 'ArrowDown') {
@@ -105,9 +133,11 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
       if (nextIndex >= commandLog.current.length) {
         setHistoryIndex(null)
         setInput('')
+        setCaretPos(0)
       } else {
         setHistoryIndex(nextIndex)
         setInput(commandLog.current[nextIndex])
+        setCaretPos(commandLog.current[nextIndex].length)
       }
     }
   }
@@ -186,6 +216,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
               value={input}
               onChange={(e) => {
                 setInput(e.target.value)
+                setCaretPos(e.target.selectionStart)
                 setCompletions(null)
               }}
               onKeyDown={onKeyDown}
@@ -202,7 +233,7 @@ export default function Terminal({ root, cwd, history, onSubmit, focusTrigger, o
               className={reducedMotion ? '' : 'term-cursor'}
               style={{
                 position: 'absolute',
-                left: `${input.length}ch`,
+                left: `${caretPos}ch`,
                 top: 0,
                 width: '0.6em',
                 height: '1.2em',

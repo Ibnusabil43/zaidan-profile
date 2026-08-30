@@ -53,6 +53,13 @@ function ExitIcon(props) {
  * LabLink in apps/main which sends visitors the other way). Same guard
  * LabLink itself uses: render nothing when the env var isn't set, so this
  * can't ship a dead link before the other app is actually deployed.
+ *
+ * The red dot doubles as that same exit, desktop-only — the macOS
+ * "red button closes the window" convention, for anyone who reaches for it
+ * out of habit before noticing the labeled arrow. It's a second path to the
+ * identical action, not a separate feature — same `mainUrl` guard, same
+ * destination. Yellow/green stay purely decorative; only red has a real job
+ * to volunteer for.
  */
 export default function TitleBar({ cwd, onToggleSidebar, theme, onToggleTheme, mainUrl }) {
   const displayPath = cwd === '' ? '~' : `~/${cwd}`
@@ -61,10 +68,20 @@ export default function TitleBar({ cwd, onToggleSidebar, theme, onToggleTheme, m
       className="flex h-9 items-center gap-2 border-b px-4 font-mono text-xs"
       style={{ backgroundColor: 'var(--t-panel)', borderColor: 'rgba(148, 163, 184, 0.15)', color: 'var(--t-muted)' }}
     >
-      <span aria-hidden="true" className="hidden gap-1.5 lg:flex">
-        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-err)', opacity: 0.6 }} />
-        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-hint)', opacity: 0.6 }} />
-        <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-ok)', opacity: 0.6 }} />
+      <span className="hidden gap-1.5 lg:flex">
+        {mainUrl ? (
+          <a
+            href={mainUrl}
+            aria-label="Back to the main portfolio"
+            title="Back to the main portfolio"
+            className="h-2.5 w-2.5 rounded-full opacity-60 transition-opacity hover:opacity-100"
+            style={{ backgroundColor: 'var(--t-err)' }}
+          />
+        ) : (
+          <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-err)', opacity: 0.6 }} />
+        )}
+        <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-hint)', opacity: 0.6 }} />
+        <span aria-hidden="true" className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: 'var(--t-ok)', opacity: 0.6 }} />
       </span>
       <button
         type="button"
